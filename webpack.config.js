@@ -61,6 +61,7 @@ module.exports = {
 			},
 		],
 	},
+	stats: { children: false },
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: "./src/index.ejs",
