@@ -1,7 +1,6 @@
 {
 	"title": "Distill Example",
 	"description": "An example project using Webpack, Babel, and Svelte.",
-	"password": "svgs",
 	"authors": [
 		{
 			"author": "Ludwig Schubert",
