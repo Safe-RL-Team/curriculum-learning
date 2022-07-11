@@ -101,16 +101,60 @@ d-figure > figure {
 
   <d-article>
 
+    <h2>Introduction</h2>
+
+    <h4>Key Ideas</h4>
     <p>
-      Here comes some text
+      <ul>
+        <li>A teacher trains a student to solve a task</li>
+        <li>The teacher keeps the student safe during training</li>
+        <li>For this, the teacher is given a set of pre-defined interventions and learns to apply them optimally$\rightarrow\emph{curriculum policy}$</li>
+        <li>Interventions are pairs of trigger states and transitions guiding the student back into a safe state</li>
+      </ul>
     </p>
+
+    <h4>Our Approach</h4>
+    <p>
+      We compare the students trained by the Optimized curriculum policy from the paper <d-cite key="Turchetta2020SafeRL"/></d-cite>
+      to students trained with our own curriculum policies.
+    </p>
+
+    <h2>Background</h2>
+
+    <h4>Constrained Markov Decision Process</h4>
+
+    <ul>
+      <li>
+        The student is a RL agent trained in a CMDP
+        $ \mathcal{M} = \langle \mathcal{S},\mathcal{A},\mathcal{P},r,\mathcal{D} \rangle $
+      </li>
+      <li>$\mathcal{S}, \mathcal{A}$: State and action space</li>
+      <li>$\mathcal{P}(s'|s,a)$: Transition kernel</li>
+      <li>$r:\mathcal{S}\times\mathcal{A}\times\mathcal{S}\rightarrow\mathbb{R}$: Reward function</li>
+      <li>$\mathcal{D}$: Set of unsafe terminal states</li>
+    </ul>
+
+    <h4>Curriculum Induction for Safe RL</h4>
+
+    <ul>
+      <li>In CISR, the teacher gets a set $\mathcal{I}$ of interventions $\{ \langle \mathcal{D}_i, \mathcal{T}_i \rangle \}_{i=1}^K$ as input, which consist of \emph{trigger states} $\mathcal{D}_i \subset \mathcal{S}$ and reset distributions $\mathcal{T}_i: \mathcal{S} \rightarrow \Delta_{\mathcal{S} \backslash \mathcal{D}_i}$</li>
+      <li><b>Curriculum</b>: Sequence of CMDPs $\mathcal{M}_{i_1},...,\mathcal{M}_{i_{N_s}}$, where during the $n^{\text{th}}$ curriculum step, the student interacts with the CMDP $\mathcal{M}_{i_n}$ induced by an intervention $i_n\in\mathcal{I}$</li>
+      <li><b>Curriculum Policy</b>: A curriculum policy $\pi^T: \mathcal{H} \rightarrow \mathcal{I}$ maps the teacher's observation history of statistics $\phi(\pi_1),...,\phi(\pi_{n-1})\in\mathcal{H}$ about the student's policy to an intervention at the start of the $n^{\text{th}}$ curriculum step</li>
+      <li>For curriculum policies independent of the student's policy (e.g. SR, HR, Back or Incremental), this can be simplified to a mapping $\pi^T:[N_s]\rightarrow \mathcal{I}$</li>
+    </ul>
 
     <d-figure id="trajectories-visualization">
       <figure>
         <div id="trajectories-visualization-target"></div>
-        <figcaption>TODO: Caption</figcaption>
+        <figcaption>Exemplary trajectories for the Frozen Smiley environment with the
+          Optimized policy. The lines represent the steps taken, while the background
+          shows a heatmap of the student's positions.</figcaption>
       </figure>
     </d-figure>
+
+    <h2>...</h2>
+    <p>TODO</p>
+
   </d-article>
 
 
