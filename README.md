@@ -1,3 +1,8 @@
+# Curriculum Learning Blog
+
+based on [Safe-RL-Team/CISR_NeurIPS20](https://github.com/Safe-RL-Team/CISR_NeurIPS20)
+
+
 # Distill post--example
 
 Distill articles depend on [distillpub/template](https://github.com/distillpub/template) for styling and some functionality such as footnotes, citations, and math rendering. We built template as a standalone library of styles and [webcomponents](https://www.webcomponents.org/) to allow you to use any web development workflow you'd like. But what if you don't have strong opinions about that and just want a starter kit that works out of the box? This is such a starter kit.

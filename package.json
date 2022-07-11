@@ -2,7 +2,7 @@
 	"name": "differentiable-parameterizations",
 	"private": true,
 	"scripts": {
-		"dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
+		"dev": "export NODE_OPTIONS=--openssl-legacy-provider; cross-env NODE_ENV=development webpack-dev-server --hot",
 		"build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
 		"profile": "cross-env NODE_ENV=production webpack --profile --json > webpack-stats.json"
 	},
