@@ -77,13 +77,23 @@
     </p>
 
     <figure>
-      <%= require("../static/images/optimized_switch.svg") %>
+      <div style="max-width: 25em; margin: 0 auto;">
+        <!-- inline svg -->
+        <%= require("../static/images/optimized_switch.svg") %>
+      </div>
       <figcaption>The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).</figcaption>
     </figure>
 
     <h2>Experiments</h2>
     <h4>Curriculum Policies</h4>
     <h4>Environments</h4>
+    <figure>
+      <div style="max-width: 25em; margin: 0 auto;">
+        <!-- inline svg -->
+        <%= require("../static/images/maps.svg") %>
+      </div>
+      <figcaption>The Frozen Lake environment used in the paper \cite{Turchetta2020SafeRL} on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16). Interventions are triggered at distance = 1 from holes.</figcaption>
+    </figure>
     <h2>Results</h2>
     <h4>Student Performance</h4>
     <h4>Trajectories</h4>
