@@ -20,7 +20,7 @@
   <d-title>
     <h1>Curriculum Induction for Safe Reinforcement Learning</h1>
     <p>
-      Save reinforcement learning using curriculum learning by a trained teacher.
+      Save RL<d-footnote id="d-footnote-1">Reinforcement Learning</d-footnote> using curriculum learning by a trained teacher.
       A NI-Project<d-footnote id="d-footnote-1">Neural Information Processing Project</d-footnote>
       at TU Berlin<d-footnote id="d-footnote-1"><a href="https://www.tu.berlin/">Technical University of Berlin</a></d-footnote>
       based on <d-cite key="Turchetta2020SafeRL"></d-cite>.
@@ -29,64 +29,70 @@
 
   <d-article>
 
-    <h2>Introduction</h2>
-
-    <h4>Key Ideas</h4>
     <p>
-      <ul>
-        <li>A teacher trains a student to solve a task</li>
-        <li>The teacher keeps the student safe during training</li>
-        <li>For this, the teacher is given a set of pre-defined interventions and learns to apply them optimally$\rightarrow\emph{curriculum policy}$</li>
-        <li>Interventions are pairs of trigger states and transitions guiding the student back into a safe state</li>
-      </ul>
+      The key idea of <i>Curriculum Induction for Save RL</i> (CISR) <d-cite key="Turchetta2020SafeRL"></d-cite> is that a teacher safely trains a student to solve a given task.
+      As this keeps the RL agent already save during training, this method can be helpful in savety-critical systems.
+    </p>
+    <p>
+      The teacher needs a set of interventions, i.e. it it needs to know how to detect dangerous states and how to save the student, but it doesn't need to know how to solve the task itself.
+      In which order and how long each intervention is applied, i.e. the curriculum policy, is learned by the teacher by training multiple students.
     </p>
 
-    <h4>Our Approach</h4>
+    <h4>Our Project</h4>
     <p>
       We compare the students trained by the Optimized curriculum policy from the paper <d-cite key="Turchetta2020SafeRL"/></d-cite>
-      to students trained with our own curriculum policies.
+      to students trained with our own curriculum policies and [TODO: more].
     </p>
 
     <h2>Background</h2>
 
-    <h4>Constrained Markov Decision Process</h4>
-
+    <p>
+      In CISR, the student is a RL agent trained in a Constrained Markov Decision Process (CMDP), which is created by the teacher in each interaction unit using an intervention $i$ as described below.
+    </p>
+    <p>
+      $$ \mathcal{M}_i = \langle \mathcal{S},\mathcal{A},\mathcal{P}_i,r_i,\mathcal{D}, \mathcal{D}_i \rangle$$
+    </p>
     <ul>
-      <li>
-        The student is a RL agent trained in a CMDP
-        $ \mathcal{M} = \langle \mathcal{S},\mathcal{A},\mathcal{P},r,\mathcal{D} \rangle $
-      </li>
       <li>$\mathcal{S}, \mathcal{A}$: State and action space</li>
-      <li>$\mathcal{P}(s'|s,a)$: Transition kernel</li>
-      <li>$r:\mathcal{S}\times\mathcal{A}\times\mathcal{S}\rightarrow\mathbb{R}$: Reward function</li>
+      <li>$\mathcal{P}_i(s'|s,a)$: Transition kernel mapping pairs of states $s\in \mathcal{S}$ and actions $a\in A$ to states $s'\in \mathcal{S}$ [TODO: is this correct?]</li>
+      <li>$r_i:\mathcal{S}\times\mathcal{A}\times\mathcal{S}\rightarrow\mathbb{R}$: Reward function</li>
       <li>$\mathcal{D}$: Set of unsafe terminal states</li>
+      <li>$\mathcal{D}_i$: Set of trigger states</li>
     </ul>
 
-    <h4>Curriculum Induction for Safe RL</h4>
+    <p>
+      The teacher gets a set $\mathcal{I}$ of interventions $\{ \langle \mathcal{D}_i, \mathcal{T}_i \rangle \}_{i=1}^K$ as input, which consist of trigger states $\mathcal{D}_i \subset \mathcal{S}$ and reset distributions $\mathcal{T}_i: \mathcal{S} \rightarrow \Delta_{\mathcal{S} \backslash \mathcal{D}_i}$.
+    </p>
+    <p>
+      At he beginning of each interaction unit $n\in [N_s]$, the teacher decides on an intervention $i_n \in \mathcal{I}$, which induces the CMDP $M_{i_n}$ described above. This decision is done using the teachers curriculum policy $\pi^T: \mathcal{H} \rightarrow \mathcal{I}$, which maps the teachers observation history $\phi(\pi_1),...,\phi(\pi_{n-1})\in\mathcal{H}$ to the intervention $i_n$. As it is learned, we call this the optimized curriculum policy from now on.
+    </p>
+    <p>
+      Curriculum policies independent of the student's policy (e.g. SR, HR, Back or Incremental) are simply a mapping $\pi^T:[N_s]\rightarrow \mathcal{I}$,assigning each interaction unit a specific intervention.
+    </p>
+    <p>
+      The sequence of CMDPs $\mathcal{M}_{i_1},...,\mathcal{M}_{i_{N_s}}$, induced from the curriculum policy, is called curriculum.
+    </p>
+    <p>
+      If the student enters a trigger state $s\in \mathcal{D}_i$, the transition is modified such that $\mathcal{P}_i(s'|s,a) = \mathcal{T}_i(s'|s)$. Additionally, the reward is cleared, i.e. $r_i(s,a,s')=0$. To prevent the student from relying on interventions, a constraint on the number of times the teachers can help the student is set. It is enforced by the CMDP solver, which penalizes the student for excessive use of the teachers help.
+    </p>
 
-    <ul>
-      <li>In CISR, the teacher gets a set $\mathcal{I}$ of interventions $\{ \langle \mathcal{D}_i, \mathcal{T}_i \rangle \}_{i=1}^K$ as input, which consist of \emph{trigger states} $\mathcal{D}_i \subset \mathcal{S}$ and reset distributions $\mathcal{T}_i: \mathcal{S} \rightarrow \Delta_{\mathcal{S} \backslash \mathcal{D}_i}$</li>
-      <li><b>Curriculum</b>: Sequence of CMDPs $\mathcal{M}_{i_1},...,\mathcal{M}_{i_{N_s}}$, where during the $n^{\text{th}}$ curriculum step, the student interacts with the CMDP $\mathcal{M}_{i_n}$ induced by an intervention $i_n\in\mathcal{I}$</li>
-      <li><b>Curriculum Policy</b>: A curriculum policy $\pi^T: \mathcal{H} \rightarrow \mathcal{I}$ maps the teacher's observation history of statistics $\phi(\pi_1),...,\phi(\pi_{n-1})\in\mathcal{H}$ about the student's policy to an intervention at the start of the $n^{\text{th}}$ curriculum step</li>
-      <li>For curriculum policies independent of the student's policy (e.g. SR, HR, Back or Incremental), this can be simplified to a mapping $\pi^T:[N_s]\rightarrow \mathcal{I}$</li>
-    </ul>
+    <figure>
+      <%= require("../static/images/optimized_switch.svg") %>
+      <figcaption>The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).</figcaption>
+    </figure>
 
-    <d-figure id="trajectories-visualization">
-      <figure>
-        <div id="trajectories-visualization-target"></div>
-        <figcaption>Exemplary trajectories for the Frozen Smiley environment with the
-          Optimized policy. The lines represent the steps taken, while the background
-          shows a heatmap of the student's positions.</figcaption>
-      </figure>
-    </d-figure>
-
-    <h1>TODO</h1>
     <h2>Experiments</h2>
     <h4>Curriculum Policies</h4>
     <h4>Environments</h4>
     <h2>Results</h2>
     <h4>Student Performance</h4>
     <h4>Trajectories</h4>
+    <d-figure id="trajectories-visualization">
+      <figure>
+        <div id="trajectories-visualization-target"></div>
+        <figcaption>Exemplary trajectories for the Frozen Smiley environment with the
+          Optimized policy. The lines represent the steps taken, while the background
+          shows a heatmap of the student's positions. [TODO: maybe use different trajectories and optimize images]</figcaption>
     <h2>Conclusion</h2>
     <h2>Outlook</h2>
     <!-- Acknowledgments, Author Contributions, and References are at the end of the file -->
