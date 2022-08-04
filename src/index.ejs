@@ -49,8 +49,8 @@
     <p>
       In CISR, the student is a RL agent trained in a Constrained Markov Decision Process (CMDP), which is created by the teacher in each interaction unit using an intervention $i$ as described below.
     </p>
-    <p>
-      $$ \mathcal{M}_i = \langle \mathcal{S},\mathcal{A},\mathcal{P}_i,r_i,\mathcal{D}, \mathcal{D}_i \rangle$$
+    <p style="text-align:center">
+      $\mathcal{M}_i = \langle \mathcal{S},\mathcal{A},\mathcal{P}_i,r_i,\mathcal{D}, \mathcal{D}_i \rangle$
     </p>
     <ul>
       <li>$\mathcal{S}, \mathcal{A}$: State and action space</li>
@@ -67,7 +67,7 @@
       At he beginning of each interaction unit $n\in [N_s]$, the teacher decides on an intervention $i_n \in \mathcal{I}$, which induces the CMDP $M_{i_n}$ described above. This decision is done using the teachers curriculum policy $\pi^T: \mathcal{H} \rightarrow \mathcal{I}$, which maps the teachers observation history $\phi(\pi_1),...,\phi(\pi_{n-1})\in\mathcal{H}$ to the intervention $i_n$. As it is learned, we call this the optimized curriculum policy from now on.
     </p>
     <p>
-      Curriculum policies independent of the student's policy (e.g. SR, HR, Back or Incremental) are simply a mapping $\pi^T:[N_s]\rightarrow \mathcal{I}$,assigning each interaction unit a specific intervention.
+      Curriculum policies independent of the student's policy (e.g. SR, HR, Back or Incremental) are simply a mapping $\pi^T:[N_s]\rightarrow \mathcal{I}$, assigning each interaction unit a specific intervention.
     </p>
     <p>
       The sequence of CMDPs $\mathcal{M}_{i_1},...,\mathcal{M}_{i_{N_s}}$, induced from the curriculum policy, is called curriculum.
