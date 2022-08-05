@@ -1,6 +1,7 @@
 # Curriculum Learning Blog
 
-Codebase [for our article on Curriculum Induction for Safe Reinforcement Learning](https://safe-rl-team.github.io/curriculum-learning/) based on [Safe-RL-Team/CISR_NeurIPS20](https://github.com/Safe-RL-Team/CISR_NeurIPS20) .
+Codebase for [our article on Curriculum Induction for Safe Reinforcement Learning](https://safe-rl-team.github.io/curriculum-learning/).
+Our fork of the CISR implementation can be found here: [Safe-RL-Team/CISR_NeurIPS20](https://github.com/Safe-RL-Team/CISR_NeurIPS20).
 
 ## Setup
 
