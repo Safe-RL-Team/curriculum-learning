@@ -40,7 +40,6 @@ d-figure > figure {
   left: -48px;
 }
 
-<<<<<<< HEAD
 #table {
   overflow-x: scroll;
 }
@@ -70,7 +69,6 @@ d-figure > figure {
 #table td.no {
   background-color: #f6f6f6;
 }
-=======
 
 /* TOC */
 
@@ -87,4 +85,3 @@ d-figure > figure {
   height: 0;
   width: 6em;
 }
->>>>>>> sticky toc
