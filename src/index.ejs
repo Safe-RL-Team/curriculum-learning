@@ -18,20 +18,35 @@
   </d-front-matter>
 
   <d-title>
-    <h1>Curriculum Induction for Safe Reinforcement Learning</h1>
-    <p>
-      Save RL<d-footnote id="d-footnote-1">Reinforcement Learning</d-footnote> using curriculum learning by a trained teacher.
+    <!--TODO: Find a catchier title-->
+    <h1 id="article-title">Curriculum Induction for Safe Reinforcement Learning</h1>
+    <!--<p>
+      Safe RL<d-footnote id="d-footnote-1">Reinforcement Learning</d-footnote> using curriculum learning by a trained teacher.
       A NI-Project<d-footnote id="d-footnote-1">Neural Information Processing Project</d-footnote>
       at TU Berlin<d-footnote id="d-footnote-1"><a href="https://www.tu.berlin/">Technical University of Berlin</a></d-footnote>
       based on <d-cite key="Turchetta2020SafeRL"></d-cite>.
-    </p>
+    </p>-->
   </d-title>
 
   <d-article>
+    <d-contents>
+			<nav class="toc figcaption" id="menu">
+        <h4>Contents</h4>
+        <div><a href="./#article-title">Introduction</a></div>
+        <div><a href="./#methodology">Methodology</a></div>
+        <div><a href="./#experiments">Experiments</a></div>
+        <div><a href="./#results">Results</a></div>
+        <div><a href="./#conclusion">Conclusion</a></div>
+        <div><a href="./#outlook">Outlook</a></div>
+			</nav>
+			<div class="toc-line"></div>
+		</d-contents>
+
+    <h4>The Idea</h4>
 
     <p>
-      The key idea of <i>Curriculum Induction for Save RL</i> (CISR) <d-cite key="Turchetta2020SafeRL"></d-cite> is that a teacher safely trains a student to solve a given task.
-      As this keeps the RL agent already save during training, this method can be helpful in savety-critical systems.
+      The key idea of <i>Curriculum Induction for Safe RL</i> (CISR) <d-cite key="Turchetta2020SafeRL"></d-cite> is that a teacher safely trains a student to solve a given task.
+      As this keeps the RL agent already safe during training, this method can be helpful in safety-critical systems.
     </p>
     <p>
       The teacher needs a set of interventions, i.e. it it needs to know how to detect dangerous states and how to save the student, but it doesn't need to know how to solve the task itself.
@@ -44,7 +59,7 @@
       to students trained with our own curriculum policies and [TODO: more].
     </p>
 
-    <h2>Background</h2>
+    <h2 id="methodology">Methodology</h2>
 
     <p>
       In CISR, the student is a RL agent trained in a Constrained Markov Decision Process (CMDP), which is created by the teacher in each interaction unit using an intervention $i$ as described below.
@@ -84,7 +99,7 @@
       <figcaption>The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).</figcaption>
     </figure>
 
-    <h2>Experiments</h2>
+    <h2 id="experiments">Experiments</h2>
     <h4>Curriculum Policies</h4>
     <h4>Environments</h4>
     <figure>
@@ -94,7 +109,8 @@
       </div>
       <figcaption>The Frozen Lake environment used in the paper <d-cite key="Turchetta2020SafeRL"></d-cite> on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16). Interventions are triggered at distance = 1 from holes.</figcaption>
     </figure>
-    <h2>Results</h2>
+
+    <h2 id="results">Results</h2>
     <h4>Student Performance</h4>
     <h4>Trajectories</h4>
     <d-figure id="trajectories-visualization">
@@ -103,8 +119,10 @@
         <figcaption>Exemplary trajectories for the Frozen Smiley environment with the
           Optimized policy. The lines represent the steps taken, while the background
           shows a heatmap of the student's positions. [TODO: maybe use different trajectories and optimize images]</figcaption>
-    <h2>Conclusion</h2>
-    <h2>Outlook</h2>
+
+    <h2 id="conclusion">Conclusion</h2>
+
+    <h2 id="outlook">Outlook</h2>
     <!-- Acknowledgments, Author Contributions, and References are at the end of the file -->
 
   </d-article>
@@ -408,27 +426,22 @@
 
   </d-article>
 
-
-
   <d-appendix>
     <h3>Acknowledgments</h3>
     <p>
-      We are deeply grateful to...
-    </p>
-
-    <p>
-      Many of our diagrams are based on...
+      We are grateful to Rong Guo for supervising this project and continuously giving us feedback.
     </p>
 
     <h3>Author Contributions</h3>
     <p>
-      <b>Research:</b> Alex developed ...
+      This article was co-authored by Marvin Sextro and Jonas Loos under supervision of Rong Guo. Klaus Obermayer provided feedback on the project.
     </p>
+    <p>† equal contributions</p>
 
+    <h3>Updates and Corrections</h3>
     <p>
-      <b>Writing & Diagrams:</b> The text was initially drafted by...
+      If you see mistakes or want to suggest changes, please <a href="https://github.com/Safe-RL-Team/curriculum-learning/issues/new">create an issue on GitHub</a>.
     </p>
-
 
     <d-footnote-list></d-footnote-list>
     <d-citation-list></d-citation-list>

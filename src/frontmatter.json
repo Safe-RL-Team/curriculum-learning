@@ -1,30 +1,30 @@
 {
 	"title": "Curriculum Induction for Safe Reinforcement Learning",
-	"description": "Save reinforcement learning using curriculum learning by a trained teacher",
+	"description": "Curriculum Induction for Safe Reinforcement Learning",
 	"authors": [
 		{
-			"author": "Marvin Sextro",
-			"authorURL": "",
+			"author": "Marvin Sextro †",
+			"authorURL": "https://marvinsextro.de",
 			"affiliation": "TU Berlin",
-			"affiliationURL": "https://www.tu.berlin/"
+			"affiliationURL": "https://tu.berlin/"
 		},
 		{
-			"author": "Jonas Loos",
-			"authorURL": "",
+			"author": "Jonas Loos †",
+			"authorURL": "https://jloos.de",
 			"affiliation": "TU Berlin",
-			"affiliationURL": "https://www.tu.berlin/"
+			"affiliationURL": "https://tu.berlin/"
 		},
 		{
 			"author": "Rong Guo",
-			"authorURL": "",
-			"affiliation": "TU Berlin",
-			"affiliationURL": "https://www.tu.berlin/"
+			"authorURL": "https://rongrg.github.io/",
+			"affiliation": "NI Group, TU Berlin",
+			"affiliationURL": "https://tu.berlin/"
 		},
 		{
-			"author": "Klaus",
-			"authorURL": "",
-			"affiliation": "TU Berlin",
-			"affiliationURL": "https://www.tu.berlin/"
+			"author": "Klaus Obermayer",
+			"authorURL": "https://www.ni.tu-berlin.de/menue/members/head_of_research_group/obermayer_klaus/",
+			"affiliation": "NI Group, TU Berlin, BCCN Berlin",
+			"affiliationURL": "https://tu.berlin/"
 		}
 	],
 	"katex": {

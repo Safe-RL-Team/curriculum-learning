@@ -1,5 +1,5 @@
 {
-	"name": "differentiable-parameterizations",
+	"name": "curriculum-learning",
 	"private": true,
 	"scripts": {
 		"dev": "export NODE_OPTIONS=--openssl-legacy-provider; cross-env NODE_ENV=development webpack-dev-server --hot",
