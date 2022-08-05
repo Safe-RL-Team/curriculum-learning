@@ -75,6 +75,25 @@ d-figure > figure {
 #table td.no {
   background-color: #f6f6f6;
 }
+
+/* TOC */
+
+@media (min-width: 768px) {
+  /* TODO: maybe increase min-width (general style switches at 768px) */
+  #main-article {
+    /* TODO: check that this doesn't break anything */
+    overflow-x: initial;
+  }
+  #toc {
+    text-align: right;
+    position: sticky;
+    margin-left: -8em;
+    top: 0;
+    height: 0;
+    width: 6em;
+  }
+}
+
   </style>
   <script src="https://distill.pub/template.v2.js"></script>
 </head>
@@ -141,8 +160,8 @@ d-figure > figure {
     </p>-->
   </d-title>
 
-  <d-article>
-    <d-contents>
+  <d-article id="main-article">
+    <d-contents id="toc">
 			<nav class="toc figcaption" id="menu">
         <h4>Contents</h4>
         <div><a href="./#article-title">Introduction</a></div>

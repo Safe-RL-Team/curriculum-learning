@@ -69,3 +69,21 @@ d-figure > figure {
 #table td.no {
   background-color: #f6f6f6;
 }
+
+/* TOC */
+
+@media (min-width: 768px) {
+  /* TODO: maybe increase min-width (general style switches at 768px) */
+  #main-article {
+    /* TODO: check that this doesn't break anything */
+    overflow-x: initial;
+  }
+  #toc {
+    text-align: right;
+    position: sticky;
+    margin-left: -8em;
+    top: 0;
+    height: 0;
+    width: 6em;
+  }
+}
