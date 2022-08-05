@@ -39,3 +39,33 @@ d-figure > figure {
   top: 26px;
   left: -48px;
 }
+
+#table {
+  overflow-x: scroll;
+}
+
+#table th {
+  white-space: nowrap;
+}
+
+#table tbody th {
+  font-weight: initial;
+  border-bottom: 1px solid rgb(242, 242, 242);
+}
+
+#table tbody tr:last-of-type th {
+  border-bottom: inherit;
+}
+
+#table td,
+#table thead th {
+  text-align: center;
+}
+
+#table td {
+  border-color: rgb(242, 242, 242);
+}
+
+#table td.no {
+  background-color: #f6f6f6;
+}

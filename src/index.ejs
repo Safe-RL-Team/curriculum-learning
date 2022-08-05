@@ -56,7 +56,7 @@
     <h4>Our Project</h4>
     <p>
       We compare the students trained by the Optimized curriculum policy from the paper <d-cite key="Turchetta2020SafeRL"/></d-cite>
-      to students trained with our own curriculum policies and [TODO: more].
+      to students trained with our own curriculum policies and <!--TODO: more-->.
     </p>
 
     <h2 id="methodology">Methodology</h2>
@@ -69,7 +69,7 @@
     </p>
     <ul>
       <li>$\mathcal{S}, \mathcal{A}$: State and action space</li>
-      <li>$\mathcal{P}_i(s'|s,a)$: Transition kernel mapping pairs of states $s\in \mathcal{S}$ and actions $a\in A$ to states $s'\in \mathcal{S}$ [TODO: is this correct?]</li>
+      <li>$\mathcal{P}_i(s'|s,a)$: Transition kernel mapping pairs of states $s\in \mathcal{S}$ and actions $a\in A$ to new states $s'\in \mathcal{S}$</li>
       <li>$r_i:\mathcal{S}\times\mathcal{A}\times\mathcal{S}\rightarrow\mathbb{R}$: Reward function</li>
       <li>$\mathcal{D}$: Set of unsafe terminal states</li>
       <li>$\mathcal{D}_i$: Set of trigger states</li>
@@ -100,9 +100,70 @@
 
     <h2 id="experiments">Experiments</h2>
 
-
     <h4>Curriculum Policies</h4>
 
+    <h5>The Back Policy</h5>
+    <p>
+      One of the simplest curriculum policy one could think of involves always going back $x$ steps when a trigger state is visited.
+      In our experiments, we tested values for $x$ in the interval $[1,9]$.
+    </p>
+
+    <d-code block="" language="python">
+      class Back(object):
+      """
+      Teacher that goes back a constant number of steps
+      """
+      def __init__(self, action_sequence, x=None):
+          self.actions = action_sequence
+          self.x = x
+
+      def predict(self, obs):
+          return self.actions[self.x - 1], None
+    </d-code>
+
+    <d-figure id="back-visualization">
+      <figure>
+        <div id="back-visualization-target"></div>
+        <figcaption>
+          Successes for the Optimized curriculum policy and the Back policy for different values of reset steps $x$.
+        </figcaption>
+      </figure>
+    </d-figure>
+
+    <h5>The Incremental Policy</h5>
+
+    <p>
+      The idea behind the Incremental curriculum policy is the tradeoff between exploration and exploitation.
+      While the agent should be free to explore the map in the beginning, it should be punished harder for failures as the learning process progresses.
+      This is realized by incrementally increasing the amount of steps the agent is reset in a linear fashion.
+      Formally, Incremental$_x$ resets the agent by $\lceil \frac{1}{2^x} \cdot n \rceil$ steps in the $n^{\textrm{th}}$ curriculum step.
+      During our experiments, we tried out values for $x$ in the range $[0,4]$.
+    </p>
+
+    <d-code block="" language="python">
+      class IncrementalTeacher(object):
+      """
+      Incremental heuristic teacher that increases the buffer size on each curriculum step
+      """
+      def __init__(self, action_sequence, x=None):
+          self.actions = action_sequence
+          self.step = 0
+          self.x = x
+
+      def predict(self, obs):
+          action = int(np.ceil((1/(2 ** self.x)) * self.step))
+          self.step += 1
+          return self.actions[action], None
+    </d-code>
+
+    <d-figure id="incremental-visualization">
+      <figure>
+        <div id="incremental-visualization-target"></div>
+        <figcaption>
+          Successes for the Optimized curriculum policy and the Incremental policy for different values of reset steps $x$.
+        </figcaption>
+      </figure>
+    </d-figure>
 
     <h4>Environments</h4>
 
@@ -110,10 +171,19 @@
       <div style="max-width: 25em; margin: 0 auto;">
         <%= require("../static/images/maps.svg") %>
       </div>
-      <figcaption>The Frozen Lake environment used in the paper <d-cite key="Turchetta2020SafeRL"></d-cite> on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16). Interventions are triggered at distance = 1 from holes.</figcaption>
+      <figcaption>The Frozen Lake environment used in the paper<d-cite key="Turchetta2020SafeRL"></d-cite> on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16). Interventions are triggered at distance = 1 from holes.</figcaption>
     </figure>
 
     <h2 id="results">Results</h2>
+
+    <h4>Student Performance</h4>
+
+    <p>
+      Adding the teacher with its trigger states and intervention transitions to the maps kept the students safe during training.
+      When choosing the best parameters out of those we tested, the Back and Incremental policy were able to outperform the Optimized one.
+      As the Frozen Smiley environment is slightly larger than the original one, the increasing path lenghts made an increase in reset steps for the Back policy necessary.
+      Similarly, the Incremental curriculum policy took advantage of a longer exploration phase in the larger environment, by slowing down the increase of reset steps.
+    </p>
 
     <figure>
       <div style="max-width: 25em; margin: 0 auto;">
@@ -123,33 +193,169 @@
     </figure>
 
     <figure>
+      <table style="width: 100%" id="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th scope="col">Successes</th>
+            <th scope="col">Training Failures</th>
+            <th scope="col">Average Returns</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Back$_6$</th>
+            <td>$0.921$</td>
+            <td>$0.000$</td>
+            <td>$5.259$</td>
+          </tr>
+          <tr>
+            <th scope="row">Incremental$_2$</th>
+            <td>$0.886$</td>
+            <td>$0.000$</td>
+            <td>$5.053$</td>
+          </tr>
+          <tr>
+            <th scope="row">Trained</th>
+            <td>$0.743$</td>
+            <td>$0.000$</td>
+            <td>$4.035$</td>
+          </tr>
+          <tr>
+            <th scope="row">Original</th>
+            <td>$0.641$</td>
+            <td class="no">$3672.600$</td>
+            <td>$3.586$</td>
+          </tr>
+          <tr>
+            <th scope="row">HR</th>
+            <td class="no">$0.000$</td>
+            <td>$0.000$</td>
+            <td class="no">$-0.295$</td>
+          </tr>
+          <tr>
+            <th scope="row">SR1</th>
+            <td>$0.820$</td>
+            <td>$0.000$</td>
+            <td>$4.661$</td>
+          </tr>
+          <tr>
+            <th scope="row">Bandit</th>
+            <td>$0.659$</td>
+            <td>$0.000$</td>
+            <td>$3.638$</td>
+          </tr>
+        </tbody>
+      </table>  
+      <figcaption>
+        Success rates, training failures and average returns of different curriculum policies on the Frozen Lake environment.
+        All teachers keep the student safe while training the student in the original environment leads to failures during training.
+        On average, the Back and Incremental policy outperform the others. 
+      </figcaption>
+    </figure>
+    
+    <figure>
       <div style="max-width: 25em; margin: 0 auto;">
         <%= require("../static/images/16x16_successes.svg") %>
       </div>
-      <figcaption>Success rates of different curriculum policies on the Frozen Smiley environment. For our policies, the best found parameters $x$ are used.</figcaption>
+      <figcaption>
+        Success rates of different curriculum policies on the Frozen Smiley environment. For our policies, the best found parameters $x$ are used.
+      </figcaption>
     </figure>
 
-    <h4>Student Performance</h4>
+    <figure>
+      <table style="width: 100%" id="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th scope="col">Successes</th>
+            <th scope="col">Training Failures</th>
+            <th scope="col">Average Returns</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Back$_8$</th>
+            <td>$0.929$</td>
+            <td>$0.000$</td>
+            <td>$5.293$</td>
+          </tr>
+          <tr>
+            <th scope="row">Incremental$_4$</th>
+            <td>$0.886$</td>
+            <td>$0.000$</td>
+            <td>$5.054$</td>
+          </tr>
+          <tr>
+            <th scope="row">Trained</th>
+            <td>$0.879$</td>
+            <td>$0.000$</td>
+            <td>$4.856$</td>
+          </tr>
+          <tr>
+            <th scope="row">Original</th>
+            <td>$0.741$</td>
+            <td class="no">$2453.400$</td>
+            <td>$4.166$</td>
+          </tr>
+          <tr>
+            <th scope="row">HR</th>
+            <td class="no">$0.000$</td>
+            <td>$0.000$</td>
+            <td class="no">$-0.140$</td>
+          </tr>
+          <tr>
+            <th scope="row">SR1</th>
+            <td>$0.597$</td>
+            <td>$0.000$</td>
+            <td>$3.367$</td>
+          </tr>
+          <tr>
+            <th scope="row">Bandit</th>
+            <td>$0.398$</td>
+            <td>$0.000$</td>
+            <td>$2.133$</td>
+          </tr>
+        </tbody>
+      </table>  
+      <figcaption>
+        Success rates, training failures and average returns of different curriculum policies on the Frozen Smiley environment.
+        All teachers keep the student safe while training the student in the original environment leads to failures during training.
+        On average, the Back and Incremental policy outperform the others. 
+      </figcaption>
+    </figure>
 
     <h4>Trajectories</h4>
     <d-figure id="trajectories-visualization">
       <figure>
         <div id="trajectories-visualization-target"></div>
-        <figcaption>Exemplary trajectories for the Frozen Smiley environment with the
-          Optimized policy. The lines represent the steps taken, while the background
-          shows a heatmap of the student's positions. [TODO: maybe use different trajectories and optimize images]</figcaption>
+        <figcaption>
+          Exemplary trajectories for the Frozen Smiley environment with the Optimized policy. 
+          The lines represent the steps taken, while the background shows a heatmap of the student's positions.
+          The trajectories show a progression from the first curriculum step (left) to a later step (right).
+          <!--TODO: maybe use different trajectories and optimize images-->
+        </figcaption>
+      </figure>
+    </d-figure>
 
     <h2 id="conclusion">Conclusion</h2>
-
+    
+    <p>
+      During our experiments, we found that it is possible to define simple curriculum policies, which outperform a learned policy with little effort.
+      We also observed that larger environments require a longer exploration phase and that the original HR, SR and Bandit policies do not generalize well to larger environments.
+      Fundamentally, we found that defining reset transitions which keep the student safe is easier than defining suitable trigger states in the first place.
+      When state spaces become more complex, dynamic or just partly observable, this can become a problem.
+    </p>
 
     <h2 id="outlook">Outlook</h2>
-
+    
+    <p>
+      Going forward, the method could be applied to OpenAI's Safety Gym envrioments to test the robustness of different strategies.
+      Additionally, the amount of available interventions for the Optimized curriculum policy could be increased to account for this complexity.
+      Finally, it has to be evaluated how well our curriculum policies generalize to dynamic or random envrionments.
+    </p>
 
     <!-- Acknowledgments, Author Contributions, and References are at the end of the file -->
-
-  </d-article>
-
-
 
   <!-- ################## -->
   <!-- EXAMPLE CODE BELOW -->
@@ -442,6 +648,8 @@
       href="https://github.com/distillpub?utf8=%E2%9C%93&q=post--&type=public">implementations
       of existing Distill articles</a>, or ask for help in
     the <a href="http://slack.distill.pub">Distill Slack Community</a>.</p>
+
+  </d-article>
 
   <d-appendix>
     <h3>Acknowledgments</h3>
