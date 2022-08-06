@@ -70,6 +70,12 @@ d-figure > figure {
   background-color: #f6f6f6;
 }
 
+/* make tables/figures horizontally scrollable */
+
+figure {
+  overflow-x: auto;
+}
+
 /* TOC */
 
 @media (min-width: 768px) {

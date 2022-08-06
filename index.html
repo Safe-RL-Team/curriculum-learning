@@ -76,6 +76,12 @@ d-figure > figure {
   background-color: #f6f6f6;
 }
 
+/* make tables/figures horizontally scrollable */
+
+figure {
+  overflow-x: auto;
+}
+
 /* TOC */
 
 @media (min-width: 768px) {
@@ -275,7 +281,8 @@ d-figure > figure {
     <d-code block="" language="python">
       class IncrementalTeacher(object):
       """
-      Incremental heuristic teacher that increases the buffer size on each curriculum step
+      Incremental heuristic teacher that increases the buffer
+      size on each curriculum step
       """
       def __init__(self, action_sequence, x=None):
           self.actions = action_sequence
