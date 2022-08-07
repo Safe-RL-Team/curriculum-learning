@@ -92,4 +92,8 @@ figure {
     height: 0;
     width: 6em;
   }
+  /* larger appendix padding/margin to prevent the TOC from scrolling over */
+  d-appendix {
+    margin-top: 100px !important;
+  }
 }
