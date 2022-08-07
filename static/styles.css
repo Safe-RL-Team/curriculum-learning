@@ -70,6 +70,10 @@ d-figure > figure {
   background-color: #f6f6f6;
 }
 
+#article-title {
+  color: #525252;
+}
+
 /* make tables/figures horizontally scrollable */
 
 figure {

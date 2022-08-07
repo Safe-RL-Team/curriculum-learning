@@ -5,6 +5,7 @@ import * as _unused from "raw-loader!./index.ejs";
 import Trajectories from "./diagrams/trajectories.svelte";
 import Back from "./diagrams/back.svelte"
 import Incremental from "./diagrams/incremental.svelte"
+import Grid from "./diagrams/grid.svelte"
 
 // lazily initialize any diagram below the fold. E.G:
 
@@ -27,4 +28,11 @@ let incremental;
 incrementalTag.addEventListener("ready", () => {
 	const target = incrementalTag.querySelector("#incremental-visualization-target");
 	incremental = new Incremental({ target });
+});
+
+const gridTag = document.getElementById("grid-visualization");
+let grid;
+gridTag.addEventListener("ready", () => {
+	const target = gridTag.querySelector("#grid-visualization-target");
+	grid = new Grid({ target });
 });

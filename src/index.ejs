@@ -30,6 +30,10 @@
 
   <d-article id="main-article">
 
+    <d-figure id="grid-visualization" class="l-page-outset">
+      <div id="grid-visualization-target"></div>
+    </d-figure>
+
     <d-abstract>
       Abstract
     </d-abstract>
@@ -100,28 +104,31 @@
       If the student enters a trigger state $s\in \mathcal{D}_i$, the transition is modified such that $\mathcal{P}_i(s'|s,a) = \mathcal{T}_i(s'|s)$. Additionally, the reward is cleared, i.e. $r_i(s,a,s')=0$. To prevent the student from relying on interventions, a constraint on the number of times the teachers can help the student is set. It is enforced by the CMDP solver, which penalizes the student for excessive use of the teachers help.
     </p>
 
-    <figure>
+    <d-figure>
       <div style="max-width: 25em; margin: 0 auto;">
         <%= require("../static/images/optimized_switch.svg") %>
       </div>
       <figcaption>
         The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).
       </figcaption>
-    </figure>
+    </d-figure>
 
     <h4>Training</h4>
 
-    Teacher learns online in $N_t$ rounds and plays a decision rule $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
-    Each student $j$ learns via $N_s$ interaction units, updating its policy by transferring between units. Then, the teacher computes features $\phi$ by evaluating the student's policies, based on which it proposes the next CMDP.
-    At the end of each round, the teacher adjusts its decision rule.
+    <p>
+      Teacher learns online in $N_t$ rounds and plays a decision rule $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
+      Each student $j$ learns via $N_s$ interaction units, updating its policy by transferring between units. Then, the teacher computes features $\phi$ by evaluating the student's policies, based on which it proposes the next CMDP.
+      At the end of each round, the teacher adjusts its decision rule.
+    </p>
 
-    <figure style="display: flex; flex-direction: column; align-items: center;">
-      <img style="max-width: 25em; " src="./images/cisr.png">
+    <d-figure>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <img style="max-width: 25em; " src="./images/cisr.png">
+      </div>
       <figcaption>
         The CISR algorithm<d-cite key="Turchetta2020SafeRL"></d-cite>.
       </figcaption>
-    </figure>
-
+    </d-figure>
 
     <h2 id="experiments">Experiments</h2>
 
@@ -134,12 +141,12 @@
       The environments are implemented as two-dimensional square grid-worlds, where the agent can move up/down/left/right.
     </p>
 
-    <figure>
+    <d-figure>
       <div style="max-width: 25em; margin: 0 auto;">
         <%= require("../static/images/maps.svg") %>
       </div>
       <figcaption>The Frozen Lake environment used in the paper<d-cite key="Turchetta2020SafeRL"></d-cite> on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16). Interventions are triggered at distance = 1 from holes.</figcaption>
-    </figure>
+    </d-figure>
 
     <h4>Curriculum Policies</h4>
 
@@ -163,12 +170,10 @@
     </d-code>
 
     <d-figure id="back-visualization">
-      <figure>
-        <div id="back-visualization-target"></div>
-        <figcaption>
-          Successes for the Optimized curriculum policy and the Back policy for different values of $x$.
-        </figcaption>
-      </figure>
+      <div id="back-visualization-target"></div>
+      <figcaption>
+        Successes for the Optimized curriculum policy and the Back policy for different values of $x$.
+      </figcaption>
     </d-figure>
 
     <h5>The Incremental Policy</h5>
@@ -365,7 +370,7 @@
         <figcaption>
           Exemplary trajectories for the Frozen Smiley environment with the Optimized policy. 
           The lines represent the steps taken, while the background shows a heatmap of the student's positions.
-          The trajectories show a progression from the first curriculum step (left) to a later step (right).
+          The trajectories show a progression from the first curriculum step to a later step.
           <!--TODO: maybe use different trajectories and optimize images-->
         </figcaption>
       </figure>
