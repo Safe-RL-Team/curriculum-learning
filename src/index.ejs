@@ -62,7 +62,7 @@
 
     <h4>Our Project</h4>
     <p>
-      We compare the students trained by the Optimized curriculum policy from the paper <d-cite key="Turchetta2020SafeRL"/></d-cite>
+      We compare the students trained by the Optimized curriculum policy from the paper <d-cite key="Turchetta2020SafeRL"></d-cite>
       to students trained with our own curriculum policies and <!--TODO: more-->.
     </p>
 
@@ -102,7 +102,22 @@
       <div style="max-width: 25em; margin: 0 auto;">
         <%= require("../static/images/optimized_switch.svg") %>
       </div>
-      <figcaption>The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).</figcaption>
+      <figcaption>
+        The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).
+      </figcaption>
+    </figure>
+
+    <h4>Training</h4>
+
+    Teacher learns online in $N_t$ rounds and plays a decision rule $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
+    Each student $j$ learns via $Ns$ interaction units, updating its policy by transferring between units. Then, the teacher computes features $𝜙$ by evaluating the student's policies, based on which it proposes the next CMDP.
+    At the end of each round, the teacher adjusts its decision rule.
+
+    <figure style="display: flex; flex-direction: column; align-items: center;">
+      <img style="max-width: 25em; " src="./images/cisr.png">
+      <figcaption>
+        The CISR algorithm<d-cite key="Turchetta2020SafeRL"></d-cite>.
+      </figcaption>
     </figure>
 
 
