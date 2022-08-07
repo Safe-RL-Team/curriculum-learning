@@ -88,10 +88,6 @@ figure {
 
 /* TOC */
 
-* {
-  scroll-margin-top: 1em;
-}
-
 @media (min-width: 1000px) {
   /* TODO: maybe change min-width (general style switches at 768px, footer titles at about 1000px) */
   #main-article {
@@ -126,6 +122,10 @@ figure {
   }
 }
 
+* {
+  scroll-margin-top: 1em;
+  touch-action: manipulation;
+}
   </style>
   <script src="https://distill.pub/template.v2.js"></script>
 </head>
@@ -529,8 +529,10 @@ figure {
 
     <h4>Trajectories</h4>
 
-    The figure below shows a visualization of the paths taken by the students during training. During the first curriculum steps we can see the students exploring the map,
-    while at later steps, they follow the previously found path, with only slight deviations or optimizations.
+    <p>
+      The figure below shows a visualization of the paths taken by the students during training.
+      During the first curriculum steps we can see the students exploring the map, while at later steps, they follow the previously found path, with only slight deviations or optimizations.
+    </p>
 
     <d-figure id="trajectories-visualization">
       <figure>
