@@ -84,23 +84,35 @@ figure {
 
 /* TOC */
 
+* {
+  scroll-margin-top: 1em;
+}
+
 @media (min-width: 768px) {
   /* TODO: maybe increase min-width (general style switches at 768px) */
   #main-article {
     /* TODO: check that this doesn't break anything */
     overflow-x: initial;
   }
+  .toc-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
   #toc {
+    display: flex;
+    flex-direction: row;
     text-align: right;
-    position: sticky;
-    margin-left: -8em;
-    top: 0;
+    margin-left: -10em;
+    top: 6em;
     height: 0;
     width: 6em;
   }
-  /* larger appendix padding/margin to prevent the TOC from scrolling over */
-  d-appendix {
-    margin-top: 100px !important;
+  .toc-line {
+    margin-left: 1em;
+    margin-top: 1em;
+    width: 1px;
+    height: 10em;
+    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -171,18 +183,25 @@ figure {
   </d-title>
 
   <d-article id="main-article">
+
+    <d-abstract>
+      Abstract
+    </d-abstract>
+
     <d-contents id="toc">
-			<nav class="toc figcaption" id="menu">
-        <h4>Contents</h4>
-        <div><a href="./#article-title">Introduction</a></div>
-        <div><a href="./#methodology">Methodology</a></div>
-        <div><a href="./#experiments">Experiments</a></div>
-        <div><a href="./#results">Results</a></div>
-        <div><a href="./#conclusion">Conclusion</a></div>
-        <div><a href="./#outlook">Outlook</a></div>
-			</nav>
-			<div class="toc-line"></div>
-		</d-contents>
+      <div class="toc-wrapper">
+        <nav class="figcaption" id="menu">
+          <h4>Contents</h4>
+          <div><a href="./#article-title">Introduction</a></div>
+          <div><a href="./#methodology">Methodology</a></div>
+          <div><a href="./#experiments">Experiments</a></div>
+          <div><a href="./#results">Results</a></div>
+          <div><a href="./#conclusion">Conclusion</a></div>
+          <div><a href="./#outlook">Outlook</a></div>
+        </nav>
+        <div class="toc-line"></div>
+      </div>
+    </d-contents>
 
     <h4>The Idea</h4>
 
