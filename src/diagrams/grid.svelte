@@ -182,7 +182,33 @@
       drawAgent();
 
       lastPosition = [x, y];
-      
+
+      if (leftPressed || rightPressed) {
+        let rnd = Math.random()
+        if (rnd < 0.1) {
+          leftPressed = false;
+          rightPressed = false;
+          upPressed = true;
+        } else if (rnd < 0.2) {
+          leftPressed = false;
+          rightPressed = false;
+          downPressed = true;
+        }
+      }
+
+      if (upPressed || downPressed) {
+        let rnd = Math.random()
+        if (rnd < 0.1) {
+          upPressed = false;
+          downPressed = false;
+          leftPressed = true;
+        } else if (rnd < 0.2) {
+          upPressed = false;
+          downPressed = false;
+          rightPressed = true;
+        }
+      }
+
       if (rightPressed) {
         if (x < map[0].length - 1) x += 1
       } else if (leftPressed) {
