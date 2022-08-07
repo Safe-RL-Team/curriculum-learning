@@ -110,7 +110,7 @@
     <h4>Training</h4>
 
     Teacher learns online in $N_t$ rounds and plays a decision rule $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
-    Each student $j$ learns via $Ns$ interaction units, updating its policy by transferring between units. Then, the teacher computes features $𝜙$ by evaluating the student's policies, based on which it proposes the next CMDP.
+    Each student $j$ learns via $N_s$ interaction units, updating its policy by transferring between units. Then, the teacher computes features $\phi$ by evaluating the student's policies, based on which it proposes the next CMDP.
     At the end of each round, the teacher adjusts its decision rule.
 
     <figure style="display: flex; flex-direction: column; align-items: center;">
