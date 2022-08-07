@@ -154,7 +154,7 @@
           let y = i * tileSize;
 
           ctx.beginPath();
-          ctx.rect(x, y, tileSize, tileSize);
+          ctx.rect(x, y, tileSize + 1, tileSize + 1);
           ctx.fillStyle = colors[state];
           ctx.fill();
           ctx.closePath(); 

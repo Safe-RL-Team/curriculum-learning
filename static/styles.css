@@ -82,10 +82,6 @@ figure {
 
 /* TOC */
 
-* {
-  scroll-margin-top: 1em;
-}
-
 @media (min-width: 1000px) {
   /* TODO: maybe change min-width (general style switches at 768px, footer titles at about 1000px) */
   #main-article {
@@ -118,4 +114,9 @@ figure {
     /* counteract bottom margin of the TOC */
     margin-top: -12em;
   }
+}
+
+* {
+  scroll-margin-top: 1em;
+  touch-action: manipulation;
 }
