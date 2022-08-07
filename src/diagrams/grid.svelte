@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
 
   let canvas;
-  let maps = {
+  const maps = {
     'small': [
       'SFFFFFFFFF',
       'FFFFFFFFFF',
@@ -34,7 +34,7 @@
       'HHFFFFFFFFFFFFHH'
     ]
   }
-  let colors = {
+  const colors = {
     'H': '#1976d2',
     'S': '#ef9a9a',
     'F': '#e1f5fe',
@@ -52,6 +52,9 @@
   var downPressed = false;
 
   var mapChanged = true;
+
+  var statusMessage = 'press the arrow keys to move...';
+  var statusTimer = setTimeout(() => {statusMessage = ''}, 5000);
 
   onMount(() => {
     const ctx = canvas.getContext('2d')
@@ -183,8 +186,9 @@
 
       lastPosition = [x, y];
 
+      // slip with 20% probability
+      const rnd = Math.random()
       if (leftPressed || rightPressed) {
-        let rnd = Math.random()
         if (rnd < 0.1) {
           leftPressed = false;
           rightPressed = false;
@@ -195,9 +199,7 @@
           downPressed = true;
         }
       }
-
-      if (upPressed || downPressed) {
-        let rnd = Math.random()
+      else if (upPressed || downPressed) {
         if (rnd < 0.1) {
           upPressed = false;
           downPressed = false;
@@ -208,7 +210,11 @@
           rightPressed = true;
         }
       }
+      if (rnd < 0.2 && (upPressed || downPressed || leftPressed || rightPressed)) {
+        showMessage('You just slipped')
+      }
 
+      // change player position
       if (rightPressed) {
         if (x < map[0].length - 1) x += 1
       } else if (leftPressed) {
@@ -219,14 +225,22 @@
         if (y < map.length - 1) y += 1
       }
 
-      if (map[y][x] == 'G' || map[y][x] == 'H') {
+      // check for win and fail
+      if (map[y][x] == 'G') {
+        showMessage('You won!');
+        [x, y] = start;
+      }
+      else if (map[y][x] == 'H') {
+        showMessage('You failed.');
         [x, y] = start;
       }
 
       if (teacherMap[y][x] == 'T') {
         if (selectedReset == 'HR') {
+          showMessage('The teacher set you back to the start.');
           [x, y] = start;
         } else if (selectedReset == 'SR') {
+          showMessage('The teacher set you one step back.');
           [x, y] = lastPosition;
         }
       }
@@ -251,17 +265,27 @@
   function keyDownHandler(e) {
 		if(e.keyCode == 39 || e.key == 'd') {
 			rightPressed = true;
+      e.preventDefault();
 		}
 		else if(e.keyCode == 37 || e.key == 'a') {
 			leftPressed = true;
+      e.preventDefault();
 		}
     else if(e.keyCode == 38 || e.key == 'w') {
       upPressed = true;
+      e.preventDefault();
     }
     else if(e.keyCode == 40 || e.key == 's') {
       downPressed = true;
+      e.preventDefault();
     }
 	}
+
+  function showMessage(msg) {
+    clearTimeout(statusTimer);
+    statusMessage = msg;
+    statusTimer = setTimeout(() => {statusMessage = ''}, 1000)
+  }
 </script>
 
 <svelte:window on:keydown={keyDownHandler}/>
@@ -273,6 +297,8 @@
     width={300}
     height={300}
   ></canvas>
+
+  <p style="height: 1em; transition: color 1s">{statusMessage}</p>
 
   <div class="menu">
     <select bind:value={selectedMap} on:change={mapChangedHandler} name="map" id="map">
