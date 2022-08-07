@@ -82,8 +82,8 @@ figure {
   scroll-margin-top: 1em;
 }
 
-@media (min-width: 768px) {
-  /* TODO: maybe increase min-width (general style switches at 768px) */
+@media (min-width: 1000px) {
+  /* TODO: maybe change min-width (general style switches at 768px, footer titles at about 1000px) */
   #main-article {
     /* TODO: check that this doesn't break anything */
     overflow-x: initial;
@@ -93,10 +93,12 @@ figure {
     flex-direction: row;
   }
   #toc {
+    position: sticky;
     display: flex;
     flex-direction: row;
     text-align: right;
     margin-left: -10em;
+    margin-bottom: 12em;
     top: 6em;
     height: 0;
     width: 6em;
@@ -107,5 +109,9 @@ figure {
     width: 1px;
     height: 10em;
     background-color: rgba(0, 0, 0, 0.1);
+  }
+  #abstract-text {
+    /* counteract bottom margin of the TOC */
+    margin-top: -12em;
   }
 }
