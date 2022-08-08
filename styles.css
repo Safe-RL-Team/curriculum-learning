@@ -25,6 +25,10 @@ d-figure > figure {
   margin-bottom: 0;
 }
 
+d-abstract {
+  grid-template-columns: none !important;
+}
+
 .shaded-figure {
   background-color: hsl(0, 0%, 97%);
   border-top: 1px solid hsla(0, 0%, 0%, 0.1);
@@ -107,7 +111,7 @@ figure, figure div {
     margin-left: 1em;
     margin-top: 1em;
     width: 1px;
-    height: 10em;
+    height: 12em;
     background-color: rgba(0, 0, 0, 0.1);
   }
   #abstract-text {

@@ -31,6 +31,10 @@ d-figure > figure {
   margin-bottom: 0;
 }
 
+d-abstract {
+  grid-template-columns: none !important;
+}
+
 .shaded-figure {
   background-color: hsl(0, 0%, 97%);
   border-top: 1px solid hsla(0, 0%, 0%, 0.1);
@@ -113,7 +117,7 @@ figure, figure div {
     margin-left: 1em;
     margin-top: 1em;
     width: 1px;
-    height: 10em;
+    height: 12em;
     background-color: rgba(0, 0, 0, 0.1);
   }
   #abstract-text {
@@ -188,14 +192,24 @@ figure, figure div {
     </p>
   </d-title>
 
+  <d-byline></d-byline>
+
   <d-article id="main-article">
 
     <d-figure id="grid-visualization" class="l-page-outset">
       <div id="grid-visualization-target"></div>
     </d-figure>
-
-    <d-abstract>
-      
+    
+    <d-abstract class="l-page-outset">
+      <p>
+        The minigame above lets you play the role of a reinforcement learning agent trying to maximize the reward by reaching a goal.
+        Try to avoid the holes and navigate over the surface of the Frozen Lake, but watch your step as the ice may be slippery.
+        In safety-critical environments, failure can be costly and should be avoided during training.
+        Use the drop-down menus to configure a teacher which helps you best solve the task while avoiding danger zones.
+      </p>
+      <p>
+        <i><b>Curriculum Learning</b> is all about applying the safeguard mechanisms you just tried out in an optimal way.</i>
+      </p>
     </d-abstract>
 
     <d-contents id="toc">
@@ -219,7 +233,7 @@ figure, figure div {
       <h4>The Idea</h4>
 
       <p>
-        The key idea of <i>Curriculum Induction for Safe RL</i> (CISR) <d-cite key="Turchetta2020SafeRL"></d-cite> is that a teacher safely trains a student to solve a given task.
+        The key idea of <i>Curriculum Induction for Safe RL</i> (CISR)<d-cite key="Turchetta2020SafeRL"></d-cite> is that a teacher safely trains a student to solve a given task.
         As this keeps the RL agent already safe during training, this method can be helpful in safety-critical systems.
       </p>
       <p>
@@ -238,10 +252,10 @@ figure, figure div {
     <h2 id="background">Background</h2>
 
     <p>
-      For the application of RL, savety can be the deciding factor enabling or preventing the usage of a system.
+      For the application of RL, safety can be the deciding factor enabling or preventing the usage of a system.
       This is especially true for physical systems, as they can degrade or destroy themselves or their environment.
-      Thereby, it is not only important for the system to be save during deployment, but also already during trining in the real world.
-      Approaches to RL savety include constrained markov decision processes (CDMPs), as used in this work, budgeted MDPs, and Lyapunov functions.
+      Thereby, it is not only important for the system to be safe during deployment, but also already during trining in the real world.
+      Approaches to RL safety include constrained markov decision processes (CDMPs), as used in this work, budgeted MDPs, and Lyapunov functions.
       <d-cite key="DulacArnold2019ChallengesOR"></d-cite>
     </p>
 
