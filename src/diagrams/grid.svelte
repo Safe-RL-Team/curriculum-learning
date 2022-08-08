@@ -2,48 +2,9 @@
   import { onMount } from 'svelte';
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
-import { xlink_attr } from 'svelte/internal';
+  import { maps, colors } from "./constants.svelte"
 
   let canvas;
-  const maps = {
-    'small': [
-      'SFFFFFFFFF',
-      'FFFFFFFFFF',
-      'HFFFFFFFFF',
-      'FFHFFFFFFF',
-      'HFFFFHFFFF',
-      'FFHFFFHFFF',
-      'HFFFFHFFFF',
-      'FFHFFFFFFF',
-      'HFFFFFFFFF',
-      'FFFGFFFFFF'
-    ],
-    '16x16': [
-      'HHFFFFFFFFFFFFHH',
-      'HFFFFFFFFFFFFFFH',
-      'FFFFFFFFFFFFFFFF',
-      'FFFHHHFFFFHHHFFF',
-      'FFFHHHFFFFHHHFFF',
-      'FFFFFFFFFFFFFFFF',
-      'FFFFFFFFFFFFFFFF',
-      'FFFFFFFFGFFFFFFF',
-      'FFFFFFFFFFFFFFFF',
-      'FFFFFFFFFFFFFFFF',
-      'FFFHHHFFFFHHHFFF',
-      'FFFHHHHHHHHHHFFF',
-      'FFFFHHHHHHHHFFFF',
-      'FFFFFFFFFFFFFFFF',
-      'HFFFFFFFSFFFFFFH',
-      'HHFFFFFFFFFFFFHH'
-    ]
-  }
-  const colors = {
-    'H': '#1976d2',
-    'S': '#ef9a9a',
-    'F': '#e1f5fe',
-    'G': '#81c784',
-    'T': '#ffe0b2'
-  }
 
   let selectedMap;
   let selectedTeacher;
@@ -62,7 +23,7 @@ import { xlink_attr } from 'svelte/internal';
   var statusTimer = setTimeout(() => {statusMessage = ''}, 5000);
 
   onMount(() => {
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d');
 
     var tileSize;
     var map;
@@ -216,7 +177,7 @@ import { xlink_attr } from 'svelte/internal';
         }
       }
       if (rnd < 0.2 && (upPressed || downPressed || leftPressed || rightPressed)) {
-        showMessage('You just slipped')
+        showMessage('You just slipped.')
       }
 
       // remember last position
@@ -305,41 +266,49 @@ import { xlink_attr } from 'svelte/internal';
 
 <svelte:window on:keydown={keyDownHandler}/>
 
-<div style="display: flex; flex-direction: column; align-items: center;">
+<div class="game">
 
-  <canvas
-    bind:this={canvas}
-    width={300}
-    height={300}
-  ></canvas>
+  <div class="map">
+    <canvas
+      bind:this={canvas}
+      width={300}
+      height={300}
+    ></canvas>
 
-  <p style="height: 1em; transition: color 1s">{statusMessage}</p>
-
-  <div class="menu">
-    <select bind:value={selectedMap} on:change={mapChangedHandler} name="map" id="map">
-      <option value="small">Small</option>
-      <option value="16x16">16x16</option>
-    </select>
-
-    <select bind:value={selectedTeacher} name="teacher" id="teacher">
-      <option value="0">No Teacher</option>
-      <option value="1">Distance 1</option>
-      <option value="2">Distance 2</option>
-    </select>
-
-    <select bind:value={selectedReset} name="reset" id="reset">
-      <option value="SR">Soft Reset</option>
-      <option value="HR">Hard Reset</option>
-    </select>
+    <img width=300 alt="TODO" src="./images/map_legend.svg">
   </div>
 
-  <div class="keyboard">
-    <div></div>
-    <button on:click={() => upPressed = true} class="key">&#8593;</button>
-    <div></div>
-    <button on:click={() => leftPressed = true} class="key">&#8592;</button>
-    <button on:click={() => downPressed = true} class="key">&#8595;</button>
-    <button on:click={() => rightPressed = true} class="key">&#8594;</button>
+  <div class="controls">
+
+    <p class="status">{statusMessage}</p>
+
+    <div class="menu">
+      <select bind:value={selectedMap} on:change={mapChangedHandler} name="map" id="map">
+        <option value="small">Frozen Lake</option>
+        <option value="16x16">Frozen Smiley</option>
+      </select>
+
+      <select bind:value={selectedTeacher} name="teacher" id="teacher">
+        <option value="0">No Teacher</option>
+        <option value="1">Distance 1</option>
+        <option value="2">Distance 2</option>
+      </select>
+
+      <select bind:value={selectedReset} name="reset" id="reset">
+        <option value="SR">Soft Reset</option>
+        <option value="HR">Hard Reset</option>
+      </select>
+    </div>
+
+    <div class="keyboard">
+      <div></div>
+      <button on:click={() => upPressed = true} class="key">&#8593;</button>
+      <div></div>
+      <button on:click={() => leftPressed = true} class="key">&#8592;</button>
+      <button on:click={() => downPressed = true} class="key">&#8595;</button>
+      <button on:click={() => rightPressed = true} class="key">&#8594;</button>
+    </div>
+
   </div>
 
 </div>
@@ -349,21 +318,37 @@ import { xlink_attr } from 'svelte/internal';
     padding: 1em
   }
 
+  .game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .status {
+    height: 1em;
+    width: 16em;
+    text-align: center;
+    transition: color 1s;
+    padding-top: 1em;
+  }
+
+  .map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .menu {
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
-
-  .menu select {
-    margin: 1em;
-  }
-
-  .keyboard {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-gap: 0.5em;
-    padding: 1em;
   }
 
   .key {
@@ -377,10 +362,37 @@ import { xlink_attr } from 'svelte/internal';
 		border-bottom: 5px solid rgba(0, 0, 0, 0.2);
 		color: #555;
     text-align: center;
-    width: 3em;
-    height: 3em;
-    cursor:pointer;
+    width: 4em;
+    height: 4em;
+    cursor: pointer;
 	}
+
+  @media (min-width: 768px) {
+    .game {
+      flex-direction: row;
+    }
+    .controls {
+      flex-direction: column;
+    }
+    .menu {
+      flex-direction: column;
+    }
+    .key {
+      width: 3em;
+      height: 3em;
+    }
+  }
+
+  .menu select {
+    margin: 0.5em;
+  }
+
+  .keyboard {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 0.5em;
+    padding: 1em;
+  }
 
   .key:active {
     background-color: #ddd;
