@@ -203,6 +203,7 @@ figure, figure div {
         <nav class="figcaption" id="menu">
           <h4>Contents</h4>
           <div><a href="./#article-title">Introduction</a></div>
+          <div><a href="./#background">Background</a></div>
           <div><a href="./#methodology">Methodology</a></div>
           <div><a href="./#experiments">Experiments</a></div>
           <div><a href="./#results">Results</a></div>
@@ -232,6 +233,33 @@ figure, figure div {
         to students trained with our own curriculum policies and <!--TODO: more-->.
       </p>
     </div>
+
+
+    <h2 id="background">Background</h2>
+
+    <p>
+      For the application of RL, savety can be the deciding factor enabling or preventing the usage of a system.
+      This is especially true for physical systems, as they can degrade or destroy themselves or their environment.
+      Thereby, it is not only important for the system to be save during deployment, but also already during trining in the real world.
+      Approaches to RL savety include constrained markov decision processes (CDMPs), as used in this work, budgeted MDPs, and Lyapunov functions.
+      <d-cite key="DulacArnold2019ChallengesOR"></d-cite>
+    </p>
+
+    <p>
+      An example application for the need of safety during training of RL systems are autonomous cars.
+      While simulations are helpful und maybe a good starting point, training in real world still seems necessary.
+      During this, preventing crashes and therefore harm to people, property and the car itself is critical.
+      <d-cite key="Turchetta2020SafeRL"></d-cite>
+    </p>
+
+    <p>
+      CISR, as a form of curriculum learning, relies on a teacher as an aid during training of the agent, which can analogously be called the student.
+      In contrast to "learning from demonstration" <d-cite key="Argall2009ASO"></d-cite>, curriculum learning doesn't expect the teacher to know how to solve the task,
+      but rather relies on the teacher to supervise and structure the learning process.
+      A partly similar approach to CISR was introduced by Graves et al. <d-cite key="Graves2017AutomatedCL"></d-cite>,
+      which uses a nonstationary multi-armed bandit algorithm to determine an optimized curriculum.
+    </p>
+
 
     <h2 id="methodology">Methodology</h2>
 
