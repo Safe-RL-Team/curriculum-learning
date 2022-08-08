@@ -1,7 +1,8 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
+  import { Confetti } from "svelte-confetti";
   import { maps, colors } from "./constants.svelte"
 
   let canvas;
@@ -22,6 +23,8 @@
 
   var statusMessage = '';
   var statusTimer = setTimeout(() => {statusMessage = ''}, 5000);
+
+  var confetti = false;
 
   onMount(() => {
     const ctx = canvas.getContext('2d');
@@ -144,7 +147,7 @@
       realPos = newPos;
     }
 
-    function draw() {
+    async function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       drawEnvironment();
@@ -209,6 +212,8 @@
       
       // check for win and fail
       if (map[y][x] == 'G') {
+        confetti = true;
+        setTimeout(() => {confetti = false}, 3000);
         showMessage('You won!');
         moveAgent(start)
       }
@@ -287,6 +292,10 @@
     ></canvas>
 
     <img width=300 alt="TODO" src="./images/map_legend.svg">
+
+    {#if confetti}
+      <Confetti cone delay={[0, 200]} amount=50 x={[-0.7, 0.7]} y={[0.5, 1.5]} />
+    {/if}
   </div>
 
   <div class="controls">

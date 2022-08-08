@@ -31,7 +31,6 @@ module.exports = {
 			},
 			{
 				test: /\.(html|svelte)$/,
-				exclude: /node_modules/,
 				loader: "svelte-loader",
 			},
 			{
