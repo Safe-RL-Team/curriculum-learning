@@ -297,6 +297,7 @@
       <select bind:value={selectedMap} on:change={mapChangedHandler} name="map" id="map">
         <option value="small">Frozen Lake</option>
         <option value="16x16">Frozen Smiley</option>
+        <option value="32x32">Large Lake</option>
       </select>
 
       <select bind:value={selectedTeacher} name="teacher" id="teacher">
