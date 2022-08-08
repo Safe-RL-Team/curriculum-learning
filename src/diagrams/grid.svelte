@@ -237,21 +237,19 @@
       else if (teacherMap[y][x] == 'T') {
         if (selectedReset == 'HR') {
           // hard reset
-          showMessage('The teacher set you back to the start.');
           history = [];
           moveAgent(start);
         } else if (selectedReset == 'B4') {
           // back 4 reset
-          showMessage('The teacher set you four steps back.');
           for (let i = 0; i < 4 && history.length > 1; i++) {
             history.pop()
           }
           moveAgent(history[history.length-1]);
         } else if (selectedReset == 'SR') {
           // soft reset
-          showMessage('The teacher set you one step back.');
           moveAgent(lastPosition);
         }
+        showMessage('The teacher set you back.');
       }
 
       mapChanged = false;
@@ -339,7 +337,7 @@
         <option value="2">Distance 2</option>
       </select>
 
-      <select bind:value={selectedReset} name="reset" id="reset">
+      <select bind:value={selectedReset} name="reset" id="reset" disabled={selectedTeacher==0}>
         <option value="SR">Soft Reset</option>
         <option value="B4">Back 4</option>
         <option value="HR">Hard Reset</option>
