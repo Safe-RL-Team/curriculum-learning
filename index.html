@@ -260,6 +260,13 @@ figure, figure div {
       which uses a nonstationary multi-armed bandit algorithm to determine an optimized curriculum.
     </p>
 
+    <p>
+      CISR can also be viewed as a "meta-learning framework" <d-cite key="Vanschoren2018MetaLearningAS"></d-cite>, with the curriculum policy being a hyperparameter under optimization.
+      In practice, the curriculum policy as a hyperparameter could be optimized in simulation or in simplified settings and then deployed for the actual training,
+      where training time is scarse. This could e.g. make the training using physical robotics faster and more secure.
+      <d-cite key="Turchetta2020SafeRL"></d-cite>
+    </p>
+
 
     <h2 id="methodology">Methodology</h2>
 
