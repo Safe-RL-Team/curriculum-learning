@@ -1,5 +1,8 @@
 <script>
   import { onMount } from 'svelte';
+  import { tweened } from "svelte/motion";
+  import { cubicOut } from "svelte/easing";
+import { xlink_attr } from 'svelte/internal';
 
   let canvas;
   const maps = {
@@ -53,7 +56,9 @@
 
   var mapChanged = true;
 
-  var statusMessage = 'press the arrow keys to move...';
+  var pos;
+
+  var statusMessage = 'Press the arrow keys to move...';
   var statusTimer = setTimeout(() => {statusMessage = ''}, 5000);
 
   onMount(() => {
@@ -62,10 +67,9 @@
     var tileSize;
     var map;
     var start;
-    var x,y;
     var lastPosition;
     var teacherMap;
-    
+
     drawEnvironment();
 
     function oneStepReach(baseMask) {
@@ -167,7 +171,7 @@
 
     function drawAgent() {
       ctx.beginPath();
-      ctx.rect(x * tileSize, y * tileSize, tileSize, tileSize);
+      ctx.rect($pos[0] * tileSize, $pos[1] * tileSize, tileSize, tileSize);
       ctx.fillStyle = '#9575cd';
       ctx.fill();
       ctx.closePath(); 
@@ -179,12 +183,13 @@
       drawEnvironment();
 
       if (mapChanged) {
-        [x, y] = start;
+        pos = tweened(start, {
+          duration: 100,
+          easing: cubicOut,
+        });
       }
 
-      drawAgent();
-
-      lastPosition = [x, y];
+      drawAgent(); 
 
       // slip with 20% probability
       const rnd = Math.random()
@@ -214,7 +219,11 @@
         showMessage('You just slipped')
       }
 
-      // change player position
+      // remember last position
+      lastPosition = Array.from([Math.round($pos[0]), Math.round($pos[1])]);
+      let [x, y] = Array.from(lastPosition);
+
+      // change player pos
       if (rightPressed) {
         if (x < map[0].length - 1) x += 1
       } else if (leftPressed) {
@@ -225,23 +234,29 @@
         if (y < map.length - 1) y += 1
       }
 
+      // move if button is pressed
+      if (rightPressed || leftPressed || downPressed || upPressed) {
+        pos.set([x, y]);
+      }
+      
       // check for win and fail
       if (map[y][x] == 'G') {
         showMessage('You won!');
-        [x, y] = start;
+        pos.set(start)
       }
       else if (map[y][x] == 'H') {
         showMessage('You failed.');
-        [x, y] = start;
+        pos.set(start)
       }
 
+      // Teacher interventions
       if (teacherMap[y][x] == 'T') {
         if (selectedReset == 'HR') {
           showMessage('The teacher set you back to the start.');
-          [x, y] = start;
+          pos.set(start);
         } else if (selectedReset == 'SR') {
           showMessage('The teacher set you one step back.');
-          [x, y] = lastPosition;
+          pos.set(lastPosition)
         }
       }
 
