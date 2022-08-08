@@ -76,7 +76,7 @@ d-figure > figure {
 
 /* make tables/figures horizontally scrollable */
 
-figure {
+figure, figure div {
   overflow-x: auto;
 }
 
