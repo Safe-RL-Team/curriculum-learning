@@ -2,7 +2,6 @@
   import { onMount } from 'svelte';
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
-import { xlink_attr } from 'svelte/internal';
 
   let canvas;
   const maps = {
@@ -58,7 +57,7 @@ import { xlink_attr } from 'svelte/internal';
 
   var pos;
 
-  var statusMessage = 'Press the arrow keys to move...';
+  var statusMessage = '';
   var statusTimer = setTimeout(() => {statusMessage = ''}, 5000);
 
   onMount(() => {
@@ -270,6 +269,7 @@ import { xlink_attr } from 'svelte/internal';
       requestAnimationFrame(draw);
     }
 
+    showMessage('Press the arrow keys to move...')
     draw();
   });
 
@@ -297,9 +297,11 @@ import { xlink_attr } from 'svelte/internal';
 	}
 
   function showMessage(msg) {
-    clearTimeout(statusTimer);
-    statusMessage = msg;
-    statusTimer = setTimeout(() => {statusMessage = ''}, 1000)
+    // show a status message below the map
+    statusMessage = '';  // clear status message and css transition
+    clearTimeout(statusTimer);  // reset previous status message clear
+    setTimeout(() => {statusMessage = msg}, 1)  // wait for statusMessage to be reset
+    statusTimer = setTimeout(() => {statusMessage = ''}, 2000)  // clear status message after some time
   }
 </script>
 
@@ -311,9 +313,10 @@ import { xlink_attr } from 'svelte/internal';
     bind:this={canvas}
     width={300}
     height={300}
+    on:click={() => showMessage('Press the arrow keys to move...')}
   ></canvas>
 
-  <p style="height: 1em; transition: color 1s">{statusMessage}</p>
+  <p style="height: 1em; transition: color {statusMessage ? 2 : 0}s; transition-timing-function: ease-in; color: {statusMessage ? 'white' : 'black'};">{statusMessage}</p>
 
   <div class="menu">
     <select bind:value={selectedMap} on:change={mapChangedHandler} name="map" id="map">
