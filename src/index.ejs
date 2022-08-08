@@ -46,6 +46,7 @@
           <div><a href="./#methodology">Methodology</a></div>
           <div><a href="./#experiments">Experiments</a></div>
           <div><a href="./#results">Results</a></div>
+          <div><a href="./#limitations">Limitations</a></div>
           <div><a href="./#conclusion">Conclusion</a></div>
           <div><a href="./#outlook">Outlook</a></div>
         </nav>
@@ -132,6 +133,7 @@
 
     <h2 id="experiments">Experiments</h2>
 
+
     <h4>Environments</h4>
 
     <p>
@@ -213,6 +215,7 @@
       </figure>
     </d-figure>
 
+
     <h2 id="results">Results</h2>
 
     <h4>Student Performance</h4>
@@ -292,7 +295,7 @@
         On average, the Back and Incremental policy outperform the others. 
       </figcaption>
     </figure>
-    
+
     <figure>
       <div style="max-width: 25em; margin: 0 auto;">
         <%= require("../static/images/16x16_successes.svg") %>
@@ -364,6 +367,7 @@
       </figcaption>
     </figure>
 
+
     <h4>Trajectories</h4>
 
     <p>
@@ -384,6 +388,23 @@
       </figure>
     </d-figure>
 
+
+    <h2 id="limitations">Limitations</h2>
+
+    <p>
+      While the described method has several clear advantages, there are also disadvantages and limitations coming along with it.
+      The most obvious problem is the difficulty of defining suitable trigger states for the teacher.
+      But also a set of possibile interventions has to defined and the teacher needs to be trained too, requiring additional computational ressources.
+    </p>
+
+    <p>
+      Some tasks might also be simply so risky, that the teacher prevents the student from solving them at all, because it prevents the student
+      from taking necessary risks.
+      An example for this can be the game at the beginning, if the "Frozen Smiley" environment and the "Distance 2" teacher are selected.
+      In these cases, less restrictive trigger states are needed, which might have to allow failures during training.
+    </p>
+
+
     <h2 id="conclusion">Conclusion</h2>
     
     <p>
@@ -393,8 +414,9 @@
       When state spaces become more complex, dynamic or just partly observable, this can become a problem.
     </p>
 
+
     <h2 id="outlook">Outlook</h2>
-    
+
     <p>
       Going forward, the method could be applied to OpenAI's Safety Gym envrioments to test the robustness of different strategies.
       Additionally, the amount of available interventions for the Optimized curriculum policy could be increased to account for this complexity.
@@ -402,6 +424,7 @@
     </p>
 
   </d-article>
+
 
   <d-appendix>
     <h3>Acknowledgments</h3>
