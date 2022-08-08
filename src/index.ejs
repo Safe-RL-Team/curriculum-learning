@@ -137,6 +137,7 @@
     <p>
       We used the two environments which are shown below. Both are based on the Frozen Lake environment from the gym-library <d-cite key="gym-flake"></d-cite>.
       The idea of the environments is, that the agent should find its way over a frozen lake, from start to goal, while avoiding holes in the ice.
+      Because ice is slippery, there is a 20% chance that the agent moves to the side, instead of forward. This also causes the game to be non-deterministic.
       The trigger states, which the teacher uses to detect when invterventions should be done, are positioned around the dangerous holes.
       The environments are implemented as two-dimensional square grid-worlds, where the agent can move up/down/left/right.
     </p>
