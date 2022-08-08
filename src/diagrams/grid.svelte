@@ -18,6 +18,7 @@
   var mapChanged = true;
 
   var pos;
+  var realPos;
 
   var statusMessage = '';
   var statusTimer = setTimeout(() => {statusMessage = ''}, 5000);
@@ -138,6 +139,11 @@
       ctx.closePath(); 
     }
 
+    function moveAgent(newPos) {
+      pos.set(newPos);
+      realPos = newPos;
+    }
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -148,6 +154,7 @@
           duration: 100,
           easing: cubicOut,
         });
+        realPos = start;
       }
 
       drawAgent(); 
@@ -181,7 +188,7 @@
       }
 
       // remember last position
-      lastPosition = Array.from([Math.round($pos[0]), Math.round($pos[1])]);
+      lastPosition = Array.from(realPos);
       let [x, y] = Array.from(lastPosition);
 
       // change player pos
@@ -197,27 +204,27 @@
 
       // move if button is pressed
       if (rightPressed || leftPressed || downPressed || upPressed) {
-        pos.set([x, y]);
+        moveAgent([x, y]);
       }
       
       // check for win and fail
       if (map[y][x] == 'G') {
         showMessage('You won!');
-        pos.set(start)
+        moveAgent(start)
       }
       else if (map[y][x] == 'H') {
         showMessage('You failed.');
-        pos.set(start)
+        moveAgent(start);
       }
 
       // Teacher interventions
       if (teacherMap[y][x] == 'T') {
         if (selectedReset == 'HR') {
           showMessage('The teacher set you back to the start.');
-          pos.set(start);
+          moveAgent(start);
         } else if (selectedReset == 'SR') {
           showMessage('The teacher set you one step back.');
-          pos.set(lastPosition)
+          moveAgent(lastPosition);
         }
       }
 
