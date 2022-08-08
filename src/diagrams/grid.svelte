@@ -18,12 +18,13 @@
 
   var mapChanged = true;
 
-  var pos;
-  var realPos;
+  var pos;  // the position where the player is displayed
+  var realPos;  // the actual position of the player (animations don't change this)
+  var history = [];  // the history of player positions
 
-  var hasInteracted = false;
-  var statusMessage = '';
-  var statusTimer = setTimeout(() => {statusMessage = ''}, 5000);
+  var hasInteracted = false;  // has the reader interacted with the game yet?
+  var statusMessage = '';  // displayed status message
+  var statusTimer = null;  // timer id for clearing old timer
 
   var confetti = false;
 
@@ -146,6 +147,7 @@
     function moveAgent(newPos) {
       pos.set(newPos);
       realPos = newPos;
+      history.push(realPos);
     }
 
     function draw() {
@@ -164,6 +166,7 @@
           easing: cubicOut,
         });
         realPos = start;
+        history.push(realPos);
       }
 
       drawAgent(); 
@@ -221,19 +224,31 @@
         confetti = true;
         setTimeout(() => {confetti = false}, 3000);
         showMessage('You won!');
-        moveAgent(start)
+        history = [];
+        moveAgent(start);
       }
       else if (map[y][x] == 'H') {
         showMessage('You failed.');
+        history = [];
         moveAgent(start);
       }
 
       // Teacher interventions
-      if (teacherMap[y][x] == 'T') {
+      else if (teacherMap[y][x] == 'T') {
         if (selectedReset == 'HR') {
+          // hard reset
           showMessage('The teacher set you back to the start.');
+          history = [];
           moveAgent(start);
+        } else if (selectedReset == 'B4') {
+          // back 4 reset
+          showMessage('The teacher set you four steps back.');
+          for (let i = 0; i < 4 && history.length > 1; i++) {
+            history.pop()
+          }
+          moveAgent(history[history.length-1]);
         } else if (selectedReset == 'SR') {
+          // soft reset
           showMessage('The teacher set you one step back.');
           moveAgent(lastPosition);
         }
@@ -326,6 +341,7 @@
 
       <select bind:value={selectedReset} name="reset" id="reset">
         <option value="SR">Soft Reset</option>
+        <option value="B4">Back 4</option>
         <option value="HR">Hard Reset</option>
       </select>
     </div>
