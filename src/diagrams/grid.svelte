@@ -21,6 +21,7 @@
   var pos;
   var realPos;
 
+  var hasInteracted = false;
   var statusMessage = '';
   var statusTimer = setTimeout(() => {statusMessage = ''}, 5000);
 
@@ -147,7 +148,12 @@
       realPos = newPos;
     }
 
-    async function draw() {
+    function draw() {
+
+      if (leftPressed || rightPressed || upPressed || downPressed) {
+        hasInteracted = true;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       drawEnvironment();
@@ -243,7 +249,6 @@
       requestAnimationFrame(draw);
     }
 
-    showMessage('Press the arrow keys to move...')
     draw();
   });
 
@@ -300,7 +305,11 @@
 
   <div class="controls">
 
-    <p class="status" style="transition: color {statusMessage ? 2 : 0}s; transition-timing-function: ease-in; color: {statusMessage ? 'white' : 'black'};">{statusMessage}</p>
+    {#if hasInteracted}
+      <p class="status" style="transition: color {statusMessage ? 2 : 0}s; transition-timing-function: ease-in; color: {statusMessage ? 'white' : 'black'};">{statusMessage}</p>
+    {:else}
+      <p class="status">Press the arrow keys to move...</p>
+    {/if}
 
     <div class="menu">
       <select bind:value={selectedMap} on:change={mapChangedHandler} name="map" id="map">
