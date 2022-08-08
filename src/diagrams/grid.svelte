@@ -150,6 +150,11 @@
       history.push(realPos);
     }
 
+    function resetAgent() {
+      history = [];
+      moveAgent(start);
+    }
+
     function draw() {
 
       if (leftPressed || rightPressed || upPressed || downPressed) {
@@ -165,8 +170,7 @@
           duration: 100,
           easing: cubicOut,
         });
-        realPos = start;
-        history.push(realPos);
+        resetAgent();
       }
 
       drawAgent(); 
@@ -224,21 +228,18 @@
         confetti = true;
         setTimeout(() => {confetti = false}, 3000);
         showMessage('You won!');
-        history = [];
-        moveAgent(start);
+        resetAgent();
       }
       else if (map[y][x] == 'H') {
         showMessage('You failed.');
-        history = [];
-        moveAgent(start);
+        resetAgent();
       }
 
       // Teacher interventions
       else if (teacherMap[y][x] == 'T') {
         if (selectedReset == 'HR') {
           // hard reset
-          history = [];
-          moveAgent(start);
+          resetAgent();
         } else if (selectedReset == 'B4') {
           // back 4 reset
           for (let i = 0; i < 4 && history.length > 1; i++) {
