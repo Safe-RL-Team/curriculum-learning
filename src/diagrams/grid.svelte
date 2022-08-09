@@ -368,7 +368,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-bottom: 2em;
+    padding-bottom: 1.5em;
   }
 
   .controls {
