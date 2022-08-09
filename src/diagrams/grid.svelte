@@ -28,8 +28,21 @@
 
   var confetti = false;
 
+  var pixelRatio; // adjust game resolution to higher resolution displays
+
+  const robot = new Image();
+  robot.src = './images/robot.png';
+
+  const robotFlipped = new Image();
+  robotFlipped.src = './images/robot-flipped.png'
+
+  var flipped = false;
+  var image = robot;
+
   onMount(() => {
     const ctx = canvas.getContext('2d');
+    pixelRatio = window.devicePixelRatio;
+    ctx.scale(pixelRatio, pixelRatio);
 
     var tileSize;
     var map;
@@ -136,12 +149,14 @@
       }
     }
 
-    function drawAgent() {
-      ctx.beginPath();
-      ctx.rect($pos[0] * tileSize, $pos[1] * tileSize, tileSize, tileSize);
-      ctx.fillStyle = '#9575cd';
-      ctx.fill();
-      ctx.closePath(); 
+    async function drawAgent() {
+      if (flipped) {
+        image = robotFlipped;
+      } else {
+        image = robot;
+      }
+
+      ctx.drawImage(image, $pos[0] * tileSize, $pos[1] * tileSize, tileSize, tileSize);
     }
 
     function moveAgent(newPos) {
@@ -167,7 +182,7 @@
 
       if (mapChanged) {
         pos = tweened(start, {
-          duration: 100,
+          duration: 150,
           easing: cubicOut,
         });
         resetAgent();
@@ -202,6 +217,9 @@
       if (rnd < 0.2 && (upPressed || downPressed || leftPressed || rightPressed)) {
         showMessage('You just slipped.')
       }
+
+      if (leftPressed) flipped = true;
+      if (rightPressed) flipped = false;
 
       // remember last position
       lastPosition = Array.from(realPos);
@@ -305,8 +323,9 @@
   <div class="map">
     <canvas
       bind:this={canvas}
-      width={300}
-      height={300}
+      width={500 * pixelRatio}
+      height={500 * pixelRatio}
+      style="width: 300px; height: 300px;"
       on:click={() => showMessage('Press the arrow keys to move...')}
     ></canvas>
 
