@@ -130,6 +130,13 @@ figure, figure div {
   scroll-margin-top: 1em;
   touch-action: manipulation;
 }
+
+.horizontal-line {
+  height: 1px;
+  width: 100%;
+  background-color: rgba(0,0,0,0.1);
+  margin-bottom: 2em;
+}
   </style>
   <script src="https://distill.pub/template.v2.js"></script>
 </head>
@@ -202,15 +209,16 @@ figure, figure div {
     
     <d-abstract class="l-page-outset">
       <p>
-        The minigame above lets you play the role of a reinforcement learning agent trying to maximize the reward by reaching a goal.
+        The minigame above lets you play the role of a Reinforcement Learning (RL) agent trying to maximize the reward by reaching a goal.
         Try to avoid the holes and navigate over the surface of the Frozen Lake, but watch your step as the ice may be slippery.
-        In safety-critical environments, failure can be costly and should be avoided during training.
         Use the drop-down menus to configure a teacher which helps you best solve the task while avoiding danger zones.
       </p>
       <p>
         <i><b>Curriculum Learning</b> is all about applying the safeguard mechanisms you just tried out in an optimal way.</i>
       </p>
     </d-abstract>
+
+    <div class="l-screen horizontal-line"></div>
 
     <d-contents id="toc">
       <div class="toc-wrapper">
@@ -233,18 +241,19 @@ figure, figure div {
       <h4>The Idea</h4>
 
       <p>
-        The key idea of <i>Curriculum Induction for Safe RL</i> (CISR)<d-cite key="Turchetta2020SafeRL"></d-cite> is that a teacher safely trains a student to solve a given task.
-        As this keeps the RL agent already safe during training, this method can be helpful in safety-critical systems.
+        The key idea of <i>Curriculum Induction for Safe RL</i> (CISR) <d-cite key="Turchetta2020SafeRL"></d-cite> is that a teacher trains a student to solve a given task while avoiding failure.
+        This can be helpful in safety-critical systems, where failure is costly as the agent is already being kept safe during training.
       </p>
       <p>
-        The teacher needs a set of interventions, i.e. it it needs to know how to detect dangerous states and how to save the student, but it doesn't need to know how to solve the task itself.
-        In which order and how long each intervention is applied, i.e. the curriculum policy, is learned by the teacher by training multiple students.
+        To be able to save the student with a given set of interventions, the teacher needs to know how to detect dangerous states, but it does not need to know how to solve the task itself.
+        The <i>curriculum policy</i> defines the order and duration in which interventions are applied.
+        Learning the curriculum policy requires the teacher to train multiple students at once while assessing their performance.
       </p>
 
       <h4>Our Project</h4>
       <p>
-        We compare the students trained by the Optimized curriculum policy from the paper <d-cite key="Turchetta2020SafeRL"></d-cite>
-        to students trained with our own curriculum policies and <!--TODO: more-->.
+        We give an interactive introduction to curriculum learning and provide the theoretical background to understand and apply the method.
+        In our experiments, we compare the students trained by the Optimized curriculum policy proposed by Turchetta et al. <d-cite key="Turchetta2020SafeRL"></d-cite> to students trained with our own curriculum policies.
       </p>
     </div>
 
@@ -252,32 +261,41 @@ figure, figure div {
     <h2 id="background">Background</h2>
 
     <p>
-      For the application of RL, safety can be the deciding factor enabling or preventing the usage of a system.
-      This is especially true for physical systems, as they can degrade or destroy themselves or their environment.
-      Thereby, it is not only important for the system to be safe during deployment, but also already during trining in the real world.
-      Approaches to RL safety include constrained markov decision processes (CDMPs), as used in this work, budgeted MDPs, and Lyapunov functions.
+      For the application of RL, safety can be the deciding factor in enabling or preventing the usage of a system.
+      This is especially true for physical systems, as they can degrade or destroy themselves or even their environment.
+      Thereby, it is not only important for the system to be safe after deployment, but also during training in the real world.
+      Approaches to RL safety include Constrained Markov Decision Processes (CDMPs), as used in this work, budgeted MDPs, and Lyapunov functions.
       <d-cite key="DulacArnold2019ChallengesOR"></d-cite>
     </p>
 
     <p>
       An example application for the need of safety during training of RL systems are autonomous cars.
-      While simulations are helpful und maybe a good starting point, training in real world still seems necessary.
-      During this, preventing crashes and therefore harm to people, property and the car itself is critical.
+      While simulations are helpful und maybe a good starting point, training on the streets is still necessary.
+      During this process, it is crucial to prevent crashes and harm to people, property and the car itself.
       <d-cite key="Turchetta2020SafeRL"></d-cite>
     </p>
 
     <p>
-      CISR, as a form of curriculum learning, relies on a teacher as an aid during training of the agent, which can analogously be called the student.
-      In contrast to "learning from demonstration" <d-cite key="Argall2009ASO"></d-cite>, curriculum learning doesn't expect the teacher to know how to solve the task,
-      but rather relies on the teacher to supervise and structure the learning process.
-      A partly similar approach to CISR was introduced by Graves et al. <d-cite key="Graves2017AutomatedCL"></d-cite>,
-      which uses a nonstationary multi-armed bandit algorithm to determine an optimized curriculum.
+      CISR, as a form of curriculum learning, relies on a teacher as an aid during training of the agent, which is analogously called the student.
+      To be able to help the student, the teacher is given a set of interventions and has to decide on when to apply which.
+      For example, when teaching a child how to ride a bike, possible interventions may be adding training wheels, catching them when they fall or giving them knee and elbow guards.
+      The order in which the interventions are applied has to optimized as it can signficantly impact the student's performance.
+      In our analogy, it may be detrimental to skip the training wheels or to never remove them, since this would either give them no chance at getting started to learn the task or improving themselves.
+      By training multiple students, the teacher is able to learn an optimal curriculum policy.
+      <d-cite key="Turchetta2020SafeRL"></d-cite>
     </p>
 
     <p>
-      CISR can also be viewed as a "meta-learning framework" <d-cite key="Vanschoren2018MetaLearningAS"></d-cite>, with the curriculum policy being a hyperparameter under optimization.
-      In practice, the curriculum policy as a hyperparameter could be optimized in simulation or in simplified settings and then deployed for the actual training,
-      where training time is scarse. This could e.g. make the training using physical robotics faster and more secure.
+      In contrast to "learning from demonstration" <d-cite key="Argall2009ASO"></d-cite>, curriculum learning does not expect the teacher to know how to solve the task,
+      but rather relies on the teacher to supervise and structure the learning process.
+      A partly similar approach to CISR was introduced by Graves et al. <d-cite key="Graves2017AutomatedCL"></d-cite>,
+      using a nonstationary multi-armed bandit algorithm to determine an optimized curriculum.
+    </p>
+
+    <p>
+      CISR can also be viewed as a "meta-learning framework" <d-cite key="Vanschoren2018MetaLearningAS"></d-cite>, optimizing the curriculum policy as a hyperparameter.
+      In practice, the curriculum policy could be optimized in simulation or in simplified settings before being deployed for the actual training, where training time is scarse. 
+      For example, this could make the training using physical robotics faster and more secure.
       <d-cite key="Turchetta2020SafeRL"></d-cite>
     </p>
 

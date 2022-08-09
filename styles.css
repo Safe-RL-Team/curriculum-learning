@@ -124,3 +124,10 @@ figure, figure div {
   scroll-margin-top: 1em;
   touch-action: manipulation;
 }
+
+.horizontal-line {
+  height: 1px;
+  width: 100%;
+  background-color: rgba(0,0,0,0.1);
+  margin-bottom: 2em;
+}
