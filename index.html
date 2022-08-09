@@ -270,7 +270,7 @@ figure, figure div {
 
     <p>
       An example application for the need of safety during training of RL systems are autonomous cars.
-      While simulations are helpful und maybe a good starting point, training on the streets is still necessary.
+      While simulations are helpful and maybe a good starting point, training on the streets is still necessary.
       During this process, it is crucial to prevent crashes and harm to people, property and the car itself.
       <d-cite key="Turchetta2020SafeRL"></d-cite>
     </p>
@@ -279,7 +279,7 @@ figure, figure div {
       CISR, as a form of curriculum learning, relies on a teacher as an aid during training of the agent, which is analogously called the student.
       To be able to help the student, the teacher is given a set of interventions and has to decide on when to apply which.
       For example, when teaching a child how to ride a bike, possible interventions may be adding training wheels, catching them when they fall or giving them knee and elbow guards.
-      The order in which the interventions are applied has to be optimized as it can signficantly impact the student's performance.
+      The order in which the interventions are applied has to be optimized as it can significantly impact the student's performance.
       In our analogy, it may be detrimental to skip the training wheels or to never remove them, since this would either give them no chance at getting started to learn the task or improving themselves.
       By training multiple students, the teacher is able to learn an optimal curriculum policy.
       <d-cite key="Turchetta2020SafeRL"></d-cite>
@@ -294,8 +294,8 @@ figure, figure div {
 
     <p>
       CISR can also be viewed as a "meta-learning framework" <d-cite key="Vanschoren2018MetaLearningAS"></d-cite>, optimizing the curriculum policy as a hyperparameter.
-      In practice, the curriculum policy could be optimized in simulation or in simplified settings before being deployed for the actual training, where training time is scarse. 
-      For example, this could make the training using physical robotics faster and more secure.
+      In practice, the curriculum policy could be optimized in simulation or in simplified settings before being deployed for the actual training, where training time is scarce. 
+      For example, this could make the training with physical robots faster and more secure.
       <d-cite key="Turchetta2020SafeRL"></d-cite>
     </p>
 
@@ -367,7 +367,7 @@ figure, figure div {
       We used the two environments which are shown below. Both are based on the Frozen Lake environment from the gym-library <d-cite key="gym-flake"></d-cite>.
       The idea of the environments is, that the agent should find its way over a frozen lake, from start to goal, while avoiding holes in the ice.
       Because ice is slippery, there is a 20% chance that the agent moves to the side, instead of forward. This also causes the game to be non-deterministic.
-      The trigger states, which the teacher uses to detect when invterventions should be done, are positioned around the dangerous holes.
+      The trigger states, which the teacher uses to detect when interventions should be done, are positioned around the dangerous holes.
       The environments are implemented as two-dimensional square grid-worlds, where the agent can move up/down/left/right.
     </p>
 
@@ -411,7 +411,7 @@ figure, figure div {
     <p>
       The idea behind the Incremental curriculum policy is the tradeoff between exploration and exploitation.
       While the agent should be free to explore the map in the beginning, it should be punished harder for failures as the learning process progresses.
-      This is realized by incrementally increasing the amount of steps the agent is reset in a linear fashion.
+      This is realized by incrementally increasing the amount of steps the agent is reset linearly.
       Formally, Incremental$_x$ resets the agent by $\lceil \frac{1}{2^x} \cdot n \rceil$ steps in the $n^{\textrm{th}}$ curriculum step.
       During our experiments, we tried out values for $x$ in the range $[0,4]$.
     </p>
@@ -450,7 +450,7 @@ figure, figure div {
     <p>
       Adding the teacher with its trigger states and intervention transitions to the maps kept the students safe during training.
       When choosing the best parameters out of those we tested, the Back and Incremental policy were able to outperform the Optimized one.
-      As the Frozen Smiley environment is slightly larger than the original one, the increasing path lenghts made an increase in reset steps for the Back policy necessary.
+      As the Frozen Smiley environment is slightly larger than the original one, the increasing path lengths made an increase in reset steps for the Back policy necessary.
       Similarly, the Incremental curriculum policy took advantage of a longer exploration phase in the larger environment, by slowing down the increase of reset steps.
     </p>
 
@@ -621,7 +621,7 @@ figure, figure div {
     <p>
       While the described method has several clear advantages, there are also disadvantages and limitations coming along with it.
       The most obvious problem is the difficulty of defining suitable trigger states for the teacher.
-      But also a set of possibile interventions has to defined and the teacher needs to be trained too, requiring additional computational resources.
+      But also a set of possible interventions has to defined, and the teacher needs to be trained too, requiring additional computational resources.
     </p>
 
     <p>
@@ -645,9 +645,9 @@ figure, figure div {
     <h2 id="outlook">Outlook</h2>
 
     <p>
-      Going forward, the method could be applied to OpenAI's Safety Gym envrioments to test the robustness of different strategies.
+      Going forward, the method could be applied to OpenAI's Safety Gym environments to test the robustness of different strategies.
       Additionally, the amount of available interventions for the Optimized curriculum policy could be increased to account for this complexity.
-      Finally, it has to be evaluated how well our curriculum policies generalize to dynamic or random envrionments.
+      Finally, it has to be evaluated how well our curriculum policies generalize to dynamic or random environments.
     </p>
 
   </d-article>
