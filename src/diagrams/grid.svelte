@@ -345,23 +345,32 @@
     {/if}
 
     <div class="menu">
-      <select bind:value={selectedMap} on:change={mapChangedHandler} name="map" id="map">
-        <option value="small">Frozen Lake</option>
-        <option value="16x16">Frozen Smiley</option>
-        <option value="32x32">Large Lake</option>
-      </select>
+      <div>
+        <label for="map">Choose a map:</label>
+        <select bind:value={selectedMap} on:change={mapChangedHandler} name="map" id="map">
+          <option value="small">Frozen Lake</option>
+          <option value="16x16">Frozen Smiley</option>
+          <option value="32x32">Large Lake</option>
+        </select>
+      </div>
 
-      <select bind:value={selectedTeacher} name="teacher" id="teacher">
-        <option value="0">No Teacher</option>
-        <option value="1">Distance 1</option>
-        <option value="2">Distance 2</option>
-      </select>
+      <div>
+        <label for="teacher">Add a teacher:</label>
+        <select bind:value={selectedTeacher} name="teacher" id="teacher">
+          <option value="0">No Teacher</option>
+          <option value="1">Distance 1</option>
+          <option value="2">Distance 2</option>
+        </select>
+      </div>
 
-      <select bind:value={selectedReset} name="reset" id="reset" disabled={selectedTeacher==0}>
-        <option value="SR">Soft Reset</option>
-        <option value="B4">Back 4</option>
-        <option value="HR">Hard Reset</option>
-      </select>
+      <div>
+        <label for="reset">Reset strategy:</label>
+        <select bind:value={selectedReset} name="reset" id="reset" disabled={selectedTeacher==0}>
+          <option value="SR">Soft Reset</option>
+          <option value="B4">Back 4</option>
+          <option value="HR">Hard Reset</option>
+        </select>
+      </div>
     </div>
 
     <div class="keyboard">
@@ -414,6 +423,13 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding: 0.5em;
+  }
+
+  .menu div {
+    margin: 0.3em;
+    display: flex;
+    flex-direction: column;
   }
 
   .key {
@@ -442,14 +458,14 @@
     .menu {
       flex-direction: column;
     }
+    .menu div {
+      flex-direction: row;
+      gap: 10px;
+    }
     .key {
       width: 3em;
       height: 3em;
     }
-  }
-
-  .menu select {
-    margin: 0.5em;
   }
 
   .keyboard {
