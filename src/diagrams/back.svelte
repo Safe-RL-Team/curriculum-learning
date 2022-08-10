@@ -1,9 +1,13 @@
 <script>
   const len = 9;
   let count = 1;
+  let hasInteracted = false;
 
   function input(x) {
-    count = parseInt(x.target.value)
+    if (!hasInteracted) {
+      hasInteracted = true;
+    }
+    count = parseInt(x.target.value);
   }
 </script>
 
@@ -17,5 +21,6 @@
   <div style="width:300px; margin:auto; text-align:center;">
     <p>x = {count}</p>
     <input type="range" min="1" max="{len}" value="0" on:input={input}>
+    <p style="height: 1em; transition: 1s opacity; {hasInteracted && 'opacity: 0;'}">Move the slider to change x!</p>
   </div> 
 </div>
