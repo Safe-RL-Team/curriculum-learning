@@ -3,7 +3,6 @@
   let count = 0;
 
   function input(x) {
-    console.log(x.target.value)
     count = parseInt(x.target.value)
   }
 </script>
