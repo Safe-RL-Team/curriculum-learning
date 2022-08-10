@@ -10,7 +10,7 @@
 <div style="display: flex; flex-direction: column; align-items: center;"> 
   <img 
     src="images/16x16_back{count}_successes.svg"
-    alt="TODO"
+    alt="Interactive plot displaying the success rate of the back curriculum policy over the number of curriculum steps"
     height="300px"
     width="400px"
   /> 

@@ -329,7 +329,7 @@
       on:click={() => showMessage('Press the arrow keys to move...')}
     ></canvas>
 
-    <img width=300 alt="TODO" src="./images/map_legend_stacked.svg">
+    <img width=300 alt="Legend for the above mini-game" src="./images/map_legend_stacked.svg">
 
     {#if confetti}
       <Confetti cone delay={[0, 200]} amount=50 x={[-0.7, 0.7]} y={[0.5, 1.5]} />

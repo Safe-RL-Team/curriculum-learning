@@ -9,7 +9,7 @@
 
 <img 
   src="images/trajectories{count}.svg"
-  alt="TODO"
+  alt="Interactive plot displaying the trajectories of the RL agent on the map"
   height="300px"
   width="300px"
 />
