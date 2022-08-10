@@ -39,6 +39,9 @@
   var flipped = false;
   var image = robot;
 
+  var score = 0;
+  var lastScore = 0;
+
   onMount(() => {
     const ctx = canvas.getContext('2d');
     pixelRatio = window.devicePixelRatio;
@@ -163,11 +166,14 @@
       pos.set(newPos);
       realPos = newPos;
       history.push(realPos);
+      score -= 0.01;
     }
 
     function resetAgent() {
       history = [];
+      lastScore = score;
       moveAgent(start);
+      score = 0;
     }
 
     function draw() {
@@ -185,6 +191,7 @@
           duration: 150,
           easing: cubicOut,
         });
+        score = 0;
         resetAgent();
       }
 
@@ -202,8 +209,7 @@
           rightPressed = false;
           downPressed = true;
         }
-      }
-      else if (upPressed || downPressed) {
+      } else if (upPressed || downPressed) {
         if (rnd < 0.1) {
           upPressed = false;
           downPressed = false;
@@ -244,12 +250,13 @@
       // check for win and fail
       if (map[y][x] == 'G') {
         confetti = true;
+        score += 6;
         setTimeout(() => {confetti = false}, 3000);
         showMessage('You won!');
         resetAgent();
-      }
-      else if (map[y][x] == 'H') {
+      } else if (map[y][x] == 'H') {
         showMessage('You failed.');
+        score = 0;
         resetAgent();
       }
 
@@ -257,15 +264,19 @@
       else if (teacherMap[y][x] == 'T') {
         if (selectedReset == 'HR') {
           // hard reset
+          let tmpScore = score;
           resetAgent();
+          score = tmpScore;
         } else if (selectedReset == 'B4') {
           // back 4 reset
           for (let i = 0; i < 4 && history.length > 1; i++) {
             history.pop()
           }
+          score += 0.01;
           moveAgent(history[history.length-1]);
         } else if (selectedReset == 'SR') {
           // soft reset
+          score += 0.01;
           moveAgent(lastPosition);
         }
         showMessage('The teacher set you back.');
@@ -321,6 +332,9 @@
 <div class="game">
 
   <div class="map">
+
+    <p>Score: {score == 0 ? lastScore.toFixed(2) : score.toFixed(2) }</p>
+
     <canvas
       bind:this={canvas}
       width={500 * pixelRatio}
@@ -417,6 +431,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .map p {
+    margin: 0;
   }
 
   .menu {
