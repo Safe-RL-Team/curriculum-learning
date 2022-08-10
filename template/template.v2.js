@@ -720,8 +720,8 @@
 
   // const katexJSURL = 'https://distill.pub/third-party/katex/katex.min.js';
   // const katexCSSTag = '<link rel="stylesheet" href="https://distill.pub/third-party/katex/katex.min.css" crossorigin="anonymous">';
-  const katexJSURL = 'katex/katex.min.js';
-  const katexCSSTag = '<link rel="stylesheet" href="katex/katex.min.css">';
+  const katexJSURL = 'template/katex/katex.min.js';
+  const katexCSSTag = '<link rel="stylesheet" href="template/katex/katex.min.css">';
 
   const T = Template('d-math', `
 ${katexCSSTag}
