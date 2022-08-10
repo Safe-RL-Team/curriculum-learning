@@ -175,8 +175,8 @@
     </p>
 
     <d-figure>
-      <div style="display: flex; flex-direction: column; align-items: center;">
-        <img style="max-width: 25em; " src="./images/cisr.png">
+      <div style="max-width: 30em; margin: 0 auto;">
+        <%= require("../static/images/cisr.svg") %>
       </div>
       <figcaption>
         The CISR algorithm<d-cite key="Turchetta2020SafeRL"></d-cite>.
@@ -197,7 +197,7 @@
     </p>
 
     <d-figure>
-      <div style="max-width: 25em; margin: 0 auto;">
+      <div style="max-width: 30em; margin: 0 auto;">
         <%= require("../static/images/maps.svg") %>
       </div>
       <figcaption>The Frozen Lake environment used in the paper<d-cite key="Turchetta2020SafeRL"></d-cite> on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16). Interventions are triggered at distance = 1 from holes.</figcaption>
@@ -455,6 +455,8 @@
       An example for this can be the game at the beginning, if the "Frozen Smiley" environment and the "Distance 2" teacher are selected.
       In these cases, less restrictive trigger states are needed, which might have to allow failures during training.
     </p>
+
+    <!--TODO: Write about applicability difficulties for other environments (e.g. racing car or pole stick)-->
 
 
     <h2 id="conclusion">Conclusion</h2>
