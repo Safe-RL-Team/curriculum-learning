@@ -339,11 +339,22 @@
       bind:this={canvas}
       width={500 * pixelRatio}
       height={500 * pixelRatio}
-      style="width: 300px; height: 300px;"
+      style="max-width: 300px; width: 100%; height: 100%;"
       on:click={() => showMessage('Press the arrow keys to move...')}
     ></canvas>
 
-    <img width=300 alt="Legend for the above mini-game" src="./images/map_legend_stacked.svg">
+    <div class="legend">
+      <div class="color" style="background-color: {colors['F']}"></div>
+      <div>Safe</div>
+      <div class="color" style="background-color: {colors['G']}"></div>
+      <div>Goal</div>
+      <div class="color" style="background-color: {colors['H']}"></div>
+      <div>Danger</div>
+      <div class="color" style="background-color: {colors['S']}"></div>
+      <div>Start</div>
+      <div class="color" style="background-color: {colors['T']}"></div>
+      <div>Trigger</div>
+    </div>
 
     {#if confetti}
       <Confetti cone delay={[0, 200]} amount=50 x={[-0.7, 0.7]} y={[0.5, 1.5]} />
@@ -357,6 +368,15 @@
     {:else}
       <p class="status">Press the arrow keys to move...</p>
     {/if}
+
+    <div class="keyboard">
+      <div></div>
+      <button on:click={() => upPressed = true} class="key">&#8593;</button>
+      <div></div>
+      <button on:click={() => leftPressed = true} class="key">&#8592;</button>
+      <button on:click={() => downPressed = true} class="key">&#8595;</button>
+      <button on:click={() => rightPressed = true} class="key">&#8594;</button>
+    </div>
 
     <div class="menu">
       <div>
@@ -387,22 +407,14 @@
       </div>
     </div>
 
-    <div class="keyboard">
-      <div></div>
-      <button on:click={() => upPressed = true} class="key">&#8593;</button>
-      <div></div>
-      <button on:click={() => leftPressed = true} class="key">&#8592;</button>
-      <button on:click={() => downPressed = true} class="key">&#8595;</button>
-      <button on:click={() => rightPressed = true} class="key">&#8594;</button>
-    </div>
-
   </div>
 
 </div>
 
 <style>
 	canvas {
-    padding: 1em
+    padding-bottom: 1em;
+    padding-top: 1em;
   }
 
   .game {
@@ -417,6 +429,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 300px;
   }
 
   .status {
@@ -439,7 +453,7 @@
 
   .menu {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     padding: 0.5em;
   }
@@ -473,9 +487,6 @@
     .controls {
       flex-direction: column;
     }
-    .menu {
-      flex-direction: column;
-    }
     .menu div {
       flex-direction: row;
       gap: 10px;
@@ -495,5 +506,23 @@
 
   .key:active {
     background-color: #ddd;
+  }
+
+  .legend {
+    display: grid;
+    grid-template-columns: 1.5em 1fr 1.5em 1fr 1.5em 1fr;
+    width: 100%;
+    max-width: 300px;
+    gap: 0.5em;
+  }
+
+  .legend div {
+    display: flex;
+    justify-content: center left;
+  }
+   
+  .color {
+    width: 1.5em;
+    height: 1.5em;
   }
 </style>

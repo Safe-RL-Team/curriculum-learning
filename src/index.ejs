@@ -35,7 +35,9 @@
   <d-article id="main-article">
 
     <d-figure id="grid-visualization" class="l-page-outset">
-      <div id="grid-visualization-target"></div>
+      <figure>
+        <div id="grid-visualization-target"></div>
+      </figure>
     </d-figure>
     
     <d-abstract class="l-page-outset">
@@ -206,7 +208,10 @@
       <div style="max-width: 30em; margin: 0 auto;">
         <%= require("../static/images/maps.svg") %>
       </div>
-      <figcaption>The Frozen Lake environment used in the paper<d-cite key="Turchetta2020SafeRL"></d-cite> on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16). Interventions are triggered at distance = 1 from holes.</figcaption>
+      <figcaption>
+        The Frozen Lake environment used in the paper<d-cite key="Turchetta2020SafeRL"></d-cite> on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16).
+        Interventions are triggered at distance = 1 from holes.
+      </figcaption>
     </d-figure>
 
     <h4>Curriculum Policies</h4>
@@ -214,27 +219,37 @@
     <h5>The Back Policy</h5>
     <p>
       One of the simplest curriculum policy one could think of involves always going back $x$ steps when a trigger state is visited.
-      In our experiments, we tested values for $x$ in the interval $[1,9]$.
+      For our experiments, we tested values for $x$ in the interval $[1,9]$.
+      When playing the minigame on top of this article, you can try out the Back$_4$ policy by yourself and see how it influences training.
     </p>
 
-    <d-code block="" language="python">
-      class Back(object):
-      """
-      Teacher that goes back a constant number of steps
-      """
-      def __init__(self, action_sequence, x=None):
-          self.actions = action_sequence
-          self.x = x
-
-      def predict(self, obs):
-          return self.actions[self.x - 1], None
-    </d-code>
+    <d-figure>
+      <div>
+        <d-code block="" language="python">
+          class Back(object):
+          """
+          Teacher that goes back a constant number of steps
+          """
+          def __init__(self, action_sequence, x=None):
+              self.actions = action_sequence
+              self.x = x
+    
+          def predict(self, obs):
+              return self.actions[self.x - 1], None
+        </d-code>
+      </div>
+      <figcaption>
+        Our implementation of the Back$_x$ curriculum policy. The $n^\textrm{th}$ element of the $\texttt{action\_sequence}$ list corresponds to the action which resets the agent by $n$ steps.
+      </figcaption>
+    </d-figure>
 
     <d-figure id="back-visualization">
-      <div id="back-visualization-target"></div>
-      <figcaption>
-        Successes for the Optimized curriculum policy and the Back policy for different values of $x$.
-      </figcaption>
+      <figure>
+        <div id="back-visualization-target"></div>
+        <figcaption>
+          Successes for the Optimized curriculum policy and the Back policy for different values of $x$.
+        </figcaption>
+      </figure> 
     </d-figure>
 
     <h5>The Incremental Policy</h5>
@@ -247,22 +262,29 @@
       During our experiments, we tried out values for $x$ in the range $[0,4]$.
     </p>
 
-    <d-code block="" language="python">
-      class IncrementalTeacher(object):
-      """
-      Incremental heuristic teacher that increases the buffer
-      size on each curriculum step
-      """
-      def __init__(self, action_sequence, x=None):
-          self.actions = action_sequence
-          self.step = 0
-          self.x = x
-
-      def predict(self, obs):
-          action = int(np.ceil((1/(2 ** self.x)) * self.step))
-          self.step += 1
-          return self.actions[action], None
-    </d-code>
+    <d-figure>
+      <div>
+        <d-code block="" language="python">
+          class IncrementalTeacher(object):
+          """
+          Incremental heuristic teacher that increases the buffer
+          size on each curriculum step
+          """
+          def __init__(self, action_sequence, x=None):
+              self.actions = action_sequence
+              self.step = 0
+              self.x = x
+    
+          def predict(self, obs):
+              action = int(np.ceil((1/(2 ** self.x)) * self.step))
+              self.step += 1
+              return self.actions[action], None
+        </d-code>
+      </div>
+      <figcaption>
+        Our implementation of the Incremental$_x$ curriculum policy. The $n^\textrm{th}$ element of the $\texttt{action\_sequence}$ list corresponds to the action which resets the agent by $n$ steps.
+      </figcaption>
+    </d-figure>
 
     <d-figure id="incremental-visualization">
       <figure>
@@ -285,14 +307,16 @@
       Similarly, the Incremental curriculum policy took advantage of a longer exploration phase in the larger environment, by slowing down the increase of reset steps.
     </p>
 
-    <figure>
+    <h5>Frozen Lake</h5>
+
+    <d-figure>
       <div style="max-width: 25em; margin: 0 auto;">
         <%= require("../static/images/small_successes.svg") %>
       </div>
       <figcaption>Success rates of different curriculum policies on the Frozen Lake environment. For our policies, the best found parameters $x$ are used.</figcaption>
-    </figure>
+    </d-figure>
 
-    <figure>
+    <d-figure>
       <div><table style="width: 100%" id="table">
         <thead>
           <tr>
@@ -352,18 +376,20 @@
         All teachers keep the student safe while training the student in the original environment leads to failures during training.
         On average, the Back and Incremental policy outperform the others. 
       </figcaption>
-    </figure>
+    </d-figure>
 
-    <figure>
+    <h5>Frozen Smiley</h5>
+
+    <d-figure>
       <div style="max-width: 25em; margin: 0 auto;">
         <%= require("../static/images/16x16_successes.svg") %>
       </div>
       <figcaption>
         Success rates of different curriculum policies on the Frozen Smiley environment. For our policies, the best found parameters $x$ are used.
       </figcaption>
-    </figure>
+    </d-figure>
 
-    <figure>
+    <d-figure>
       <div><table style="width: 100%" id="table">
         <thead>
           <tr>
@@ -423,7 +449,7 @@
         All teachers keep the student safe while training the student in the original environment leads to failures during training.
         On average, the Back and Incremental policy outperform the others. 
       </figcaption>
-    </figure>
+    </d-figure>
 
 
     <h4>Trajectories</h4>
@@ -434,16 +460,13 @@
     </p>
 
     <d-figure id="trajectories-visualization">
-      <figure>
-        <br/>
-        <div id="trajectories-visualization-target"></div>
-        <figcaption>
-          Exemplary trajectories for the Frozen Smiley environment with the Optimized policy. 
-          The lines represent the steps taken, while the background shows a heatmap of the student's positions.
-          The trajectories show a progression from the first curriculum step to a later step.
-          <!--TODO: maybe use different trajectories and optimize images-->
-        </figcaption>
-      </figure>
+      <div id="trajectories-visualization-target"></div>
+      <figcaption>
+        Exemplary trajectories for the Frozen Smiley environment with the Optimized policy. 
+        The lines represent the steps taken, while the background shows a heatmap of the student's positions.
+        The trajectories show a progression from the first curriculum step to a later step.
+        <!--TODO: maybe use different trajectories and optimize images-->
+      </figcaption>
     </d-figure>
 
 
@@ -452,18 +475,17 @@
     <p>
       While the described method has several clear advantages, there are also disadvantages and limitations coming along with it.
       The most obvious problem is the difficulty of defining suitable trigger states for the teacher.
-      But also a set of possible interventions has to defined, and the teacher needs to be trained too, requiring additional computational resources.
+      During our experiments, we tried to adapt the method to several environments, but often failed to do so for this reason.
+      For example, the observation space of the car racing environment <d-cite key="gym-car-racing"></d-cite> has an observation space which consists of 96x96 pixel images.
+      In this case, defining the trigger states is not as trivial as in the Frozen Lake environment as it would require to keep track of the car's position and to work with thresholds.
+      In addition, the set of possible reset transitions has to be hand-crafted and the teacher needs to be trained, requiring additional computational resources.
     </p>
 
     <p>
-      Some tasks might also be simply so risky, that the teacher prevents the student from solving them at all, because it prevents the student
-      from taking necessary risks.
-      An example for this can be the game at the beginning, if the "Frozen Smiley" environment and the "Distance 2" teacher are selected.
+      Some tasks might also be simply so risky, that the teacher prevents the student from solving them at all, because it prevents the student from taking necessary risks.
+      An example for this can be the game at the beginning, if the Frozen Smiley environment and the teacher with trigger states within two tiles around danger zones are selected.
       In these cases, less restrictive trigger states are needed, which might have to allow failures during training.
     </p>
-
-    <!--TODO: Write about applicability difficulties for other environments (e.g. racing car or pole stick)-->
-
 
     <h2 id="conclusion">Conclusion</h2>
     
