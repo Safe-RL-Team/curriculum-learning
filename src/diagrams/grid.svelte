@@ -512,6 +512,9 @@
       max-width: 100px;
       padding-left: 1em;
     }
+    .controls {
+      max-width: 350px;
+    }
   }
 
   @media (min-width: 768px) {
@@ -520,6 +523,7 @@
     }
     .controls {
       flex-direction: column;
+      max-width: 300px;
     }
     .menu {
       flex-direction: column;

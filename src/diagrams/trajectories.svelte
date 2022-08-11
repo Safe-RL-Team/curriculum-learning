@@ -18,9 +18,9 @@
       alt="Interactive plot displaying the trajectories of the RL agent on the map"
     />
   </div>
-  <div style="margin: auto; text-align:center;">
+  <div style="text-align:center;">
     <p>Trajectory after curriculum step {count + 1}</p>
     <input type="range" min="0" max="{len}" value="0" on:input={input}>
-    <p style="height: 1em; transition: 1s opacity; {hasInteracted && 'opacity: 0;'}">Move the slider to change the step!</p>
+    <p style="transition: 1s opacity; {hasInteracted && 'opacity: 0;'}">Move the slider to change the step!</p>
   </div>
 </div>

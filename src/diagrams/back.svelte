@@ -18,9 +18,9 @@
     height="300px"
     width="300px"
   /> 
-  <div style="margin:auto; text-align:center;">
+  <div style="text-align:center;">
     <p>x = {count}</p>
     <input type="range" min="1" max="{len}" value="0" on:input={input}>
-    <p style="height: 1em; transition: 1s opacity; {hasInteracted && 'opacity: 0;'}">Move the slider to change x!</p>
+    <p style="transition: 1s opacity; {hasInteracted && 'opacity: 0;'}">Move the slider to change x!</p>
   </div> 
 </div>

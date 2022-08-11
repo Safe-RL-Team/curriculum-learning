@@ -164,12 +164,14 @@
     </p>
 
     <d-figure>
-      <div style="max-width: 25em; margin: 0 auto;">
-        <%= require("../static/images/optimized_switch.svg") %>
-      </div>
-      <figcaption>
-        The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).
-      </figcaption>
+      <figure>
+        <div style="max-width: 25em; margin: 0 auto;">
+          <%= require("../static/images/optimized_switch.svg") %>
+        </div>
+        <figcaption>
+          The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).
+        </figcaption>
+      </figure> 
     </d-figure>
 
     <h4>Training</h4>
@@ -181,12 +183,14 @@
     </p>
 
     <d-figure>
-      <div style="max-width: 30em; margin: 0 auto;">
-        <%= require("../static/images/cisr.svg") %>
-      </div>
-      <figcaption>
-        The CISR algorithm<d-cite key="Turchetta2020SafeRL"></d-cite>.
-      </figcaption>
+      <figure>
+        <div style="max-width: 30em; margin: 0 auto;">
+          <%= require("../static/images/cisr.svg") %>
+        </div>
+        <figcaption>
+          The CISR algorithm<d-cite key="Turchetta2020SafeRL"></d-cite>.
+        </figcaption>
+      </figure>
     </d-figure>
 
     <h2 id="experiments">Experiments</h2>
@@ -203,13 +207,15 @@
     </p>
 
     <d-figure>
-      <div style="max-width: 30em; margin: 0 auto;">
-        <%= require("../static/images/maps.svg") %>
-      </div>
-      <figcaption>
-        The Frozen Lake environment used in the paper<d-cite key="Turchetta2020SafeRL"></d-cite> on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16).
-        Interventions are triggered at distance = 1 from holes.
-      </figcaption>
+      <figure>
+        <div style="max-width: 30em; margin: 0 auto;">
+          <%= require("../static/images/maps.svg") %>
+        </div>
+        <figcaption>
+          The Frozen Lake environment used in the paper<d-cite key="Turchetta2020SafeRL"></d-cite> on the left (size 10x10) and our Frozen Smiley environment on the right (size 16x16).
+          Interventions are triggered at distance = 1 from holes.
+        </figcaption>
+      </figure>
     </d-figure>
 
     <h4>Curriculum Policies</h4>
@@ -221,7 +227,7 @@
       When playing the minigame on top of this article, you can try out the Back$_4$ policy by yourself and see how it influences training.
     </p>
 
-    <d-figure>
+    <figure>
       <div>
         <d-code block="" language="python">
           class Back:
@@ -239,7 +245,7 @@
       <figcaption>
         Our implementation of the Back$_x$ curriculum policy. The $n^\textrm{th}$ element of the $\texttt{action\_sequence}$ list corresponds to the action which resets the agent by $n$ steps.
       </figcaption>
-    </d-figure>
+    </figure>
 
     <d-figure id="back-visualization">
       <figure>
@@ -260,7 +266,7 @@
       During our experiments, we tried out values for $x$ in the range $[0,4]$.
     </p>
 
-    <d-figure>
+    <figure>
       <div>
         <d-code block="" language="python">
           class IncrementalTeacher:
@@ -282,7 +288,7 @@
       <figcaption>
         Our implementation of the Incremental$_x$ curriculum policy. The $n^\textrm{th}$ element of the $\texttt{action\_sequence}$ list corresponds to the action which resets the agent by $n$ steps.
       </figcaption>
-    </d-figure>
+    </figure>
 
     <d-figure id="incremental-visualization">
       <figure>
@@ -308,146 +314,156 @@
     <h5>Frozen Lake</h5>
 
     <d-figure>
-      <div style="max-width: 25em; margin: 0 auto;">
-        <%= require("../static/images/small_successes.svg") %>
-      </div>
-      <figcaption>Success rates of different curriculum policies on the Frozen Lake environment. For our policies, the best found parameters $x$ are used.</figcaption>
+      <figure>
+        <div style="max-width: 25em; margin: 0 auto;">
+          <%= require("../static/images/small_successes.svg") %>
+        </div>
+        <figcaption>
+          Success rates of different curriculum policies on the Frozen Lake environment. For our policies, the best found parameters $x$ are used.
+        </figcaption>
+      </figure>
     </d-figure>
 
-    <d-figure>
-      <div><table style="width: 100%" id="table">
-        <thead>
-          <tr>
-            <th></th>
-            <th scope="col">Successes</th>
-            <th scope="col">Training Failures</th>
-            <th scope="col">Average Returns</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Back$_6$</th>
-            <td class="no">$0.921$</td>
-            <td>$0.000$</td>
-            <td class="no">$5.259$</td>
-          </tr>
-          <tr>
-            <th scope="row">Incremental$_2$</th>
-            <td>$0.886$</td>
-            <td>$0.000$</td>
-            <td>$5.053$</td>
-          </tr>
-          <tr>
-            <th scope="row">Trained</th>
-            <td>$0.743$</td>
-            <td>$0.000$</td>
-            <td>$4.035$</td>
-          </tr>
-          <tr>
-            <th scope="row">Original</th>
-            <td>$0.641$</td>
-            <td class="no">$3672.600$</td>
-            <td>$3.586$</td>
-          </tr>
-          <tr>
-            <th scope="row">HR</th>
-            <td>$0.000$</td>
-            <td>$0.000$</td>
-            <td>$-0.295$</td>
-          </tr>
-          <tr>
-            <th scope="row">SR1</th>
-            <td>$0.820$</td>
-            <td>$0.000$</td>
-            <td>$4.661$</td>
-          </tr>
-          <tr>
-            <th scope="row">Bandit</th>
-            <td>$0.659$</td>
-            <td>$0.000$</td>
-            <td>$3.638$</td>
-          </tr>
-        </tbody>
-      </table></div>
+    <figure>
+      <div>
+        <table style="width: 100%" id="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th scope="col">Successes</th>
+              <th scope="col">Training Failures</th>
+              <th scope="col">Average Returns</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Back$_6$</th>
+              <td class="no">$0.921$</td>
+              <td>$0.000$</td>
+              <td class="no">$5.259$</td>
+            </tr>
+            <tr>
+              <th scope="row">Incremental$_2$</th>
+              <td>$0.886$</td>
+              <td>$0.000$</td>
+              <td>$5.053$</td>
+            </tr>
+            <tr>
+              <th scope="row">Trained</th>
+              <td>$0.743$</td>
+              <td>$0.000$</td>
+              <td>$4.035$</td>
+            </tr>
+            <tr>
+              <th scope="row">Original</th>
+              <td>$0.641$</td>
+              <td class="no">$3672.600$</td>
+              <td>$3.586$</td>
+            </tr>
+            <tr>
+              <th scope="row">HR</th>
+              <td>$0.000$</td>
+              <td>$0.000$</td>
+              <td>$-0.295$</td>
+            </tr>
+            <tr>
+              <th scope="row">SR1</th>
+              <td>$0.820$</td>
+              <td>$0.000$</td>
+              <td>$4.661$</td>
+            </tr>
+            <tr>
+              <th scope="row">Bandit</th>
+              <td>$0.659$</td>
+              <td>$0.000$</td>
+              <td>$3.638$</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <figcaption>
         Success rates, training failures and average returns of different curriculum policies on the Frozen Lake environment.
         All teachers keep the student safe while training the student in the original environment leads to failures during training.
         On average, the Back and Incremental policy outperform the others. 
       </figcaption>
-    </d-figure>
+    </figure>
 
     <h5>Frozen Smiley</h5>
 
     <d-figure>
-      <div style="max-width: 25em; margin: 0 auto;">
-        <%= require("../static/images/16x16_successes.svg") %>
-      </div>
-      <figcaption>
-        Success rates of different curriculum policies on the Frozen Smiley environment. For our policies, the best found parameters $x$ are used.
-      </figcaption>
+      <figure>
+        <div style="max-width: 25em; margin: 0 auto;">
+          <%= require("../static/images/16x16_successes.svg") %>
+        </div>
+        <figcaption>
+          Success rates of different curriculum policies on the Frozen Smiley environment. For our policies, the best found parameters $x$ are used.
+        </figcaption>
+      </figure>
     </d-figure>
 
-    <d-figure>
-      <div><table style="width: 100%" id="table">
-        <thead>
-          <tr>
-            <th></th>
-            <th scope="col">Successes</th>
-            <th scope="col">Training Failures</th>
-            <th scope="col">Average Returns</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Back$_8$</th>
-            <td class="no">$0.929$</td>
-            <td>$0.000$</td>
-            <td class="no">$5.293$</td>
-          </tr>
-          <tr>
-            <th scope="row">Incremental$_4$</th>
-            <td>$0.886$</td>
-            <td>$0.000$</td>
-            <td>$5.054$</td>
-          </tr>
-          <tr>
-            <th scope="row">Trained</th>
-            <td>$0.879$</td>
-            <td>$0.000$</td>
-            <td>$4.856$</td>
-          </tr>
-          <tr>
-            <th scope="row">Original</th>
-            <td>$0.741$</td>
-            <td class="no">$2453.400$</td>
-            <td>$4.166$</td>
-          </tr>
-          <tr>
-            <th scope="row">HR</th>
-            <td>$0.000$</td>
-            <td>$0.000$</td>
-            <td>$-0.140$</td>
-          </tr>
-          <tr>
-            <th scope="row">SR1</th>
-            <td>$0.597$</td>
-            <td>$0.000$</td>
-            <td>$3.367$</td>
-          </tr>
-          <tr>
-            <th scope="row">Bandit</th>
-            <td>$0.398$</td>
-            <td>$0.000$</td>
-            <td>$2.133$</td>
-          </tr>
-        </tbody>
-      </table></div>
+    <figure>
+      <div>
+        <table style="width: 100%" id="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th scope="col">Successes</th>
+              <th scope="col">Training Failures</th>
+              <th scope="col">Average Returns</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Back$_8$</th>
+              <td class="no">$0.929$</td>
+              <td>$0.000$</td>
+              <td class="no">$5.293$</td>
+            </tr>
+            <tr>
+              <th scope="row">Incremental$_4$</th>
+              <td>$0.886$</td>
+              <td>$0.000$</td>
+              <td>$5.054$</td>
+            </tr>
+            <tr>
+              <th scope="row">Trained</th>
+              <td>$0.879$</td>
+              <td>$0.000$</td>
+              <td>$4.856$</td>
+            </tr>
+            <tr>
+              <th scope="row">Original</th>
+              <td>$0.741$</td>
+              <td class="no">$2453.400$</td>
+              <td>$4.166$</td>
+            </tr>
+            <tr>
+              <th scope="row">HR</th>
+              <td>$0.000$</td>
+              <td>$0.000$</td>
+              <td>$-0.140$</td>
+            </tr>
+            <tr>
+              <th scope="row">SR1</th>
+              <td>$0.597$</td>
+              <td>$0.000$</td>
+              <td>$3.367$</td>
+            </tr>
+            <tr>
+              <th scope="row">Bandit</th>
+              <td>$0.398$</td>
+              <td>$0.000$</td>
+              <td>$2.133$</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <figcaption>
         Success rates, training failures and average returns of different curriculum policies on the Frozen Smiley environment.
         All teachers keep the student safe while training the student in the original environment leads to failures during training.
         On average, the Back and Incremental policy outperform the others. 
       </figcaption>
-    </d-figure>
+    </figure>
 
 
     <h4>Trajectories</h4>
@@ -474,8 +490,8 @@
 
     <p>
       While the described method has several clear advantages, there are also disadvantages and limitations coming along with it.
-      The most obvious problem is the difficulty of defining suitable trigger states for the teacher.
-      During our experiments, we tried to adapt the method to several environments, but often failed to do so for this reason.
+      The predominant problem we faced during our experiments is the difficulty of defining suitable trigger states for the teacher, which can be a complex task in environments with continuous state spaces and observations.
+      While the Frozen Lake environment allows to simply define which states trigger the teacher's interventions by using a distance measure from danger zones, this is less trivial for other environments.
       For example, the observation space of the car racing environment <d-cite key="gym-car-racing"></d-cite> has an observation space which consists of 96x96 pixel images.
       In this case, defining the trigger states is not as trivial as in the Frozen Lake environment as it would require to keep track of the car's position and to work with thresholds.
       In addition, the set of possible reset transitions has to be hand-crafted and the teacher needs to be trained, requiring additional computational resources.
