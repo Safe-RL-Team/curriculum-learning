@@ -336,7 +336,7 @@ figure {
     <p>
       At he beginning of each interaction unit $n\in [N_s]$, the teacher decides on an intervention $i_n \in \mathcal{I}$, which induces a CMDP $\mathcal{M}_{i_n}$ as described above.
       This decision is done using the teachers curriculum policy $\pi^T: \mathcal{H} \rightarrow \mathcal{I}$, which maps the teacher's observation history $\phi(\pi_1),...,\phi(\pi_{n-1})\in\mathcal{H}$ to the intervention $i_n$.
-      The observations $\phi(\pi_n)$ are <i>features</i> computed from the performance of the student, e.g. by taking an estimate of the the policy value $\hat{V}(\pi_n)$ or the number of necessary teacher interventions into account.
+      The observations $\phi(\pi_n)$ are <i>features</i> computed from the performance of the student, e.g. by taking an estimate of the the student's policy value $\hat{V}(\pi_n)$ or the number of necessary teacher interventions into account.
       As this curriculum policy is learned, we call it the Optimized curriculum policy from now on.
     </p>
     <p>
@@ -364,7 +364,8 @@ figure {
     <h4>Training</h4>
 
     <p>
-      Teacher learns online in $N_t$ rounds and plays a <i>decision rule</i> $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
+      Below is the CISR algorithm, which shows how the curriculum policy is optimized.
+      The teacher learns online in $N_t$ rounds and plays a <i>decision rule</i> $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
       Each student $j$ learns via $N_s$ interaction units, updating its policy by transferring between units.
       Then, the teacher computes features $\phi$ by evaluating the student's policies, based on which it proposes the next CMDP.
       At the end of each round, the teacher adjusts its decision rule.
@@ -383,9 +384,10 @@ figure {
 
     <div class="l-gutter figcaption">
       <ul style="list-style: none; padding: 0; margin:0;">
-        <li>$N_t$: Number of rounds and students</li>
+        <li>$N_t$: Number of rounds</li>
+        <li>$N_s$: Interaction units</li>
         <li>$\pi_{n,j}$: Policy of the $j$th student in the $n$th interaction unit</li>
-        <li>$\mathcal{M}_{i_n}$: CMDP induced by an intervention $i_n$</li>
+        <li>$\mathcal{M}_{i_n}$: CMDP induced by an intervention $i_n \in \mathcal{I}$</li>
         <li>$\pi^T_j$: Decision rule of the teacher for the $j$th student</li>
         <li>$o_n^T$: Teacher observations</li>
         <li>$\phi(\pi_{n,j})$: Features of the $j$th student's policy in the $n$th interaction unit</li>
