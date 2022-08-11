@@ -430,12 +430,13 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 300px;
+    max-width: 350px;
   }
 
   .status {
     height: 1em;
-    width: 16em;
+    width: 100%;
+    max-width: 300px;
     text-align: center;
     transition: color 1s;
     padding-top: 1em;
@@ -453,9 +454,10 @@
 
   .menu {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.5em;
+    flex-direction: row;
+    gap: 0.2em;
+    overflow: auto;
+    flex-wrap: wrap;
   }
 
   .menu div {
@@ -487,6 +489,9 @@
     .controls {
       flex-direction: column;
     }
+    .menu {
+      flex-direction: column;
+    }
     .menu div {
       flex-direction: row;
       gap: 10px;
@@ -501,7 +506,8 @@
     display: grid;
     grid-template-columns: auto auto auto;
     grid-gap: 0.5em;
-    padding: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
   }
 
   .key:active {
