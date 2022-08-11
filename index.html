@@ -326,18 +326,28 @@ figure {
 
     <p>
       The teacher gets a set $\mathcal{I}$ of interventions $\{ \langle \mathcal{D}_i, \mathcal{T}_i \rangle \}_{i=1}^K$ as input, which consist of trigger states $\mathcal{D}_i \subset \mathcal{S}$ and reset distributions $\mathcal{T}_i: \mathcal{S} \rightarrow \Delta_{\mathcal{S} \backslash \mathcal{D}_i}$.
+      If the student enters a trigger state $s\in \mathcal{D}_i$, the transition is modified such that $\mathcal{P}_i(s'|s,a) = \mathcal{T}_i(s'|s)$, where $s' \not\in \mathcal{D}_i$ is a safe state.
+      An intervention by the teacher does not reduce the student's reward, i.e. $r_i(s,a,s')=0$
+      <d-footnote>
+        To prevent the student from relying on interventions, a constraint on the number of times the teachers can help the student is set.
+        It is enforced by the CMDP solver, which penalizes the student for excessive use of the teachers help.
+      </d-footnote>.
     </p>
     <p>
-      At he beginning of each interaction unit $n\in [N_s]$, the teacher decides on an intervention $i_n \in \mathcal{I}$, which induces the CMDP $\mathcal{M}_{i_n}$ described above. This decision is done using the teachers curriculum policy $\pi^T: \mathcal{H} \rightarrow \mathcal{I}$, which maps the teachers observation history $\phi(\pi_1),...,\phi(\pi_{n-1})\in\mathcal{H}$ to the intervention $i_n$. As it is learned, we call this the optimized curriculum policy from now on.
+      At he beginning of each interaction unit $n\in [N_s]$, the teacher decides on an intervention $i_n \in \mathcal{I}$, which induces a CMDP $\mathcal{M}_{i_n}$ as described above.
+      This decision is done using the teachers curriculum policy $\pi^T: \mathcal{H} \rightarrow \mathcal{I}$, which maps the teacher's observation history $\phi(\pi_1),...,\phi(\pi_{n-1})\in\mathcal{H}$ to the intervention $i_n$.
+      The observations $\phi(\pi_n)$ are <i>features</i> computed from the performance of the student, e.g. by taking an estimate of the the policy value $\hat{V}(\pi_n)$ or the number of necessary teacher interventions into account.
+      As this curriculum policy is learned, we call it the Optimized curriculum policy from now on.
     </p>
     <p>
-      Curriculum policies independent of the student's policy (e.g. SR, HR, Back or Incremental) are simply a mapping $\pi^T:[N_s]\rightarrow \mathcal{I}$, assigning each interaction unit a specific intervention.
+      Curriculum policies independent of the student's policy are simply a mapping $\pi^T:[N_s]\rightarrow \mathcal{I}$, assigning each interaction unit a specific intervention.
+      Except for the Optimized curriculum policy, all policies we will work with in this article are of this kind.
+      An advantage of student-independent curriculum policies is that they do not require a training process and therefore no measure of the student's performance.
     </p>
     <p>
-      The sequence of CMDPs $\mathcal{M}_{i_1},...,\mathcal{M}_{i_{N_s}}$, induced from the curriculum policy, is called curriculum.
-    </p>
-    <p>
-      If the student enters a trigger state $s\in \mathcal{D}_i$, the transition is modified such that $\mathcal{P}_i(s'|s,a) = \mathcal{T}_i(s'|s)$. Additionally, an intervention by the teacher does not reduce the student's reward, i.e. $r_i(s,a,s')=0$. To prevent the student from relying on interventions, a constraint on the number of times the teachers can help the student is set. It is enforced by the CMDP solver, which penalizes the student for excessive use of the teachers help.
+      A sequence of CMDPs $\mathcal{M}_{i_1},...,\mathcal{M}_{i_{N_s}}$, induced from a curriculum policy, is called <i>curriculum</i>.
+      The figure below shows a curriculum induced by the Optimized curriculum policy with two simple interventions, either resetting the agent to the start or moving them one step back.
+      Note that interaction units and curriculum steps mean the same and can be used interchangeably.
     </p>
 
     <d-figure>
@@ -346,7 +356,7 @@ figure {
           <svg version="1.1" viewBox="0 0 351.68 259.26" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="b"><path d="m34.918 7.199h221.64v155.68h-221.64z"></path></clipPath><clipPath id="a"><path d="m0 0h264v195h-264z"></path></clipPath><clipPath id="e"><path d="m34.918 7.199h221.64v155.68h-221.64z"></path></clipPath><clipPath id="d"><path d="m0 0h264v195h-264z"></path></clipPath><clipPath id="c"><path d="m0 0h264v195h-264z"></path></clipPath></defs><g transform="matrix(1.3333 0 0 1.3333 0 8.4816e-6)"><g fill="#fff"><path d="m0 0h263.76v194.45h-263.76z"></path><path d="m34.918 7.199h221.64v155.68h-221.64z"></path></g><g clip-path="url(#b)"><g clip-path="url(#a)"><path d="m44.992 155.8 33.582-21.379 33.582-60.547 33.582-4.512 33.582-27.058 33.582-12.625 33.582-15.399-33.582 15.399-33.582 12.625-33.582 27.058-33.582 4.512-33.582 60.547z" fill="#2ca02c" fill-opacity=".2"></path></g></g><g transform="scale(1,-1)"><path d="m44.992-162.88v-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(43.001 174.44)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0" y="0">0</tspan></text><g transform="scale(1,-1)"><path d="m78.574-162.88v-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(76.583 174.44)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0" y="0">1</tspan></text><g transform="scale(1,-1)"><path d="m112.16-162.88v-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(110.16 174.44)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0" y="0">2</tspan></text><g transform="scale(1,-1)"><path d="m145.74-162.88v-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(143.75 174.44)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0" y="0">3</tspan></text><g transform="scale(1,-1)"><path d="m179.32-162.88v-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(177.33 174.44)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0" y="0">4</tspan></text><g transform="scale(1,-1)"><path d="m212.9-162.88v-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(210.91 174.44)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0" y="0">5</tspan></text><g transform="scale(1,-1)"><path d="m246.48-162.88v-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(244.49 174.44)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0" y="0">6</tspan></text><text transform="translate(115 185)" fill="#000000" font-size="7px" xml:space="preserve"><tspan x="0 5.355 9.8629999 13.209 16.555 18.788 22.708 27.216 29.448999 33.957001 42.819 46.41 49.216999 53.354 57.834" y="0">Curriculumsteps</tspan></text><g transform="scale(1,-1)"><path d="m34.918-157.22h-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(17.966 159.5)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0 3.9573319 5.9297757" y="0">0.0</tspan></text><g transform="scale(1,-1)"><path d="m34.918-125.57h-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(17.966 127.86)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0 3.9573319 5.9297757" y="0">0.2</tspan></text><g transform="scale(1,-1)"><path d="m34.918-93.934h-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(17.966 96.215)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0 3.9573319 5.9297757" y="0">0.4</tspan></text><g transform="scale(1,-1)"><path d="m34.918-62.293h-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(17.966 64.574)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0 3.9573319 5.9297757" y="0">0.6</tspan></text><g transform="scale(1,-1)"><path d="m34.918-30.652h-3.5" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8"></path></g><text transform="translate(17.966 32.933)" fill="#000000" font-size="6.2222px" xml:space="preserve"><tspan x="0 3.9573319 5.9297757" y="0">0.8</tspan></text><text transform="rotate(-90 57.529 45.016)" fill="#000000" font-size="7px" xml:space="preserve"><tspan x="0 3.5910001 8.099 12.019 15.939 20.076 23.667 27.257999 31.395" y="0">successes</tspan></text><g clip-path="url(#e)"><g clip-path="url(#d)"><g transform="scale(1,-1)"><path d="m145.74-162.88v155.68" fill="none" stroke="#d3d3d3" stroke-dasharray="5.55, 2.4" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"></path></g></g><g clip-path="url(#c)"><g transform="scale(1,-1)"><path d="m44.992-155.8 33.582 21.379 33.582 60.547 33.582 4.512 33.582 27.058 33.582 12.625 33.582 15.399" fill="none" stroke="#2ca02c" stroke-dasharray="5.55, 2.4" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"></path></g></g></g><g transform="scale(1,-1)" fill="none" stroke-miterlimit="10"><path d="m34.918-162.88v155.68" stroke="#000" stroke-linecap="square" stroke-width=".75"></path><path d="m34.918-162.88h221.64" stroke="#000" stroke-linecap="square" stroke-width=".75"></path><path d="m195.3-141.84h14" stroke="#2ca02c" stroke-dasharray="5.55, 2.4" stroke-linejoin="round" stroke-width="1.5"></path></g><text transform="translate(214.9 144.29)" fill="#000000" font-size="7px" xml:space="preserve"><tspan x="0 5.7329998 10.213 13.02 15.253 21.889 24.122 27.804001 31.941" y="0">Optimized</tspan></text><g transform="scale(1,-1)" fill="none" stroke="#000" stroke-width=".75"><path d="m37.891-68.66h101.82"></path><path d="m39.953-70.91-2.25 2.25 2.25 2.25" stroke-linecap="round"></path></g><g transform="scale(-1,1)"><path d="m-137.65 66.41-2.25 2.25 2.25 2.25" fill="none" stroke="#000" stroke-linecap="round" stroke-width=".75"></path></g><g transform="scale(1,-1)" fill="none" stroke="#000" stroke-width=".75"><path d="m151.7-68.652h104.95"></path><path d="m153.76-70.902-2.25 2.25 2.25 2.25" stroke-linecap="round"></path></g><g transform="scale(-1,1)"><path d="m-254.59 66.402-2.25 2.25 2.25 2.25" fill="none" stroke="#000" stroke-linecap="round" stroke-width=".75"></path></g><text transform="translate(77.819 65.987)" fill="#000000" font-size="8px" xml:space="preserve"><tspan x="0 5.0720186 10.624039" y="0">SR1</tspan><tspan x="121.59865 127.60667" y="-0.081954695">HR</tspan></text></g></svg>
         </div>
         <figcaption>
-          The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).
+          The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start) after three interaction units.
         </figcaption>
       </figure> 
     </d-figure>
@@ -354,7 +364,7 @@ figure {
     <h4>Training</h4>
 
     <p>
-      Teacher learns online in $N_t$ rounds and plays a decision rule $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
+      Teacher learns online in $N_t$ rounds and plays a <i>decision rule</i> $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
       Each student $j$ learns via $N_s$ interaction units, updating its policy by transferring between units.
       Then, the teacher computes features $\phi$ by evaluating the student's policies, based on which it proposes the next CMDP.
       At the end of each round, the teacher adjusts its decision rule.
@@ -370,6 +380,15 @@ figure {
         </figcaption>
       </figure>
     </d-figure>
+
+    <div class="l-gutter figcaption">
+      $N_t$: Number of rounds and students<br/>
+      $\pi_{n,j}$: Policy of the $j$th student in the $n$th interaction unit<br/>
+      $\mathcal{M}_{i_n}$: CMDP induced by an intervention $i_n$<br/>
+      $\pi^T_j$: Decision rule of the teacher for the $j$th student<br/>
+      $o_n^T$: Teacher observations<br/>
+      $\phi(\pi_{n,j})$: Features computed from the $j$th student's policy in the $n$th interaction unit
+    </div>
 
     <h2 id="experiments">Experiments</h2>
 
@@ -675,7 +694,7 @@ figure {
       The predominant problem we faced during our experiments is the difficulty of defining suitable trigger states for the teacher, which can be a complex task in environments with continuous state spaces and observations.
       While the Frozen Lake environment allows to simply define which states trigger the teacher's interventions by using a distance measure from danger zones, this is less trivial for other environments.
       For example, the observation space of the car racing environment <d-cite key="gym-car-racing"></d-cite> has an observation space which consists of 96x96 pixel images.
-      In this case, defining the trigger states is not as trivial as in the Frozen Lake environment as it would require to keep track of the car's position and to work with thresholds.
+      In this case, defining the trigger states would require to keep track of the car's position and to work with thresholds.
       In addition, the set of possible reset transitions has to be hand-crafted and the teacher needs to be trained, requiring additional computational resources.
     </p>
 
