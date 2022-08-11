@@ -149,18 +149,28 @@
 
     <p>
       The teacher gets a set $\mathcal{I}$ of interventions $\{ \langle \mathcal{D}_i, \mathcal{T}_i \rangle \}_{i=1}^K$ as input, which consist of trigger states $\mathcal{D}_i \subset \mathcal{S}$ and reset distributions $\mathcal{T}_i: \mathcal{S} \rightarrow \Delta_{\mathcal{S} \backslash \mathcal{D}_i}$.
+      If the student enters a trigger state $s\in \mathcal{D}_i$, the transition is modified such that $\mathcal{P}_i(s'|s,a) = \mathcal{T}_i(s'|s)$, where $s' \not\in \mathcal{D}_i$ is a safe state.
+      An intervention by the teacher does not reduce the student's reward, i.e. $r_i(s,a,s')=0$
+      <d-footnote>
+        To prevent the student from relying on interventions, a constraint on the number of times the teachers can help the student is set.
+        It is enforced by the CMDP solver, which penalizes the student for excessive use of the teachers help.
+      </d-footnote>.
     </p>
     <p>
-      At he beginning of each interaction unit $n\in [N_s]$, the teacher decides on an intervention $i_n \in \mathcal{I}$, which induces the CMDP $\mathcal{M}_{i_n}$ described above. This decision is done using the teachers curriculum policy $\pi^T: \mathcal{H} \rightarrow \mathcal{I}$, which maps the teachers observation history $\phi(\pi_1),...,\phi(\pi_{n-1})\in\mathcal{H}$ to the intervention $i_n$. As it is learned, we call this the optimized curriculum policy from now on.
+      At he beginning of each interaction unit $n\in [N_s]$, the teacher decides on an intervention $i_n \in \mathcal{I}$, which induces a CMDP $\mathcal{M}_{i_n}$ as described above.
+      This decision is done using the teachers curriculum policy $\pi^T: \mathcal{H} \rightarrow \mathcal{I}$, which maps the teacher's observation history $\phi(\pi_1),...,\phi(\pi_{n-1})\in\mathcal{H}$ to the intervention $i_n$.
+      The observations $\phi(\pi_n)$ are <i>features</i> computed from the performance of the student, e.g. by taking an estimate of the the policy value $\hat{V}(\pi_n)$ or the number of necessary teacher interventions into account.
+      As this curriculum policy is learned, we call it the Optimized curriculum policy from now on.
     </p>
     <p>
-      Curriculum policies independent of the student's policy (e.g. SR, HR, Back or Incremental) are simply a mapping $\pi^T:[N_s]\rightarrow \mathcal{I}$, assigning each interaction unit a specific intervention.
+      Curriculum policies independent of the student's policy are simply a mapping $\pi^T:[N_s]\rightarrow \mathcal{I}$, assigning each interaction unit a specific intervention.
+      Except for the Optimized curriculum policy, all policies we will work with in this article are of this kind.
+      An advantage of student-independent curriculum policies is that they do not require a training process and therefore no measure of the student's performance.
     </p>
     <p>
-      The sequence of CMDPs $\mathcal{M}_{i_1},...,\mathcal{M}_{i_{N_s}}$, induced from the curriculum policy, is called curriculum.
-    </p>
-    <p>
-      If the student enters a trigger state $s\in \mathcal{D}_i$, the transition is modified such that $\mathcal{P}_i(s'|s,a) = \mathcal{T}_i(s'|s)$. Additionally, an intervention by the teacher does not reduce the student's reward, i.e. $r_i(s,a,s')=0$. To prevent the student from relying on interventions, a constraint on the number of times the teachers can help the student is set. It is enforced by the CMDP solver, which penalizes the student for excessive use of the teachers help.
+      A sequence of CMDPs $\mathcal{M}_{i_1},...,\mathcal{M}_{i_{N_s}}$, induced from a curriculum policy, is called <i>curriculum</i>.
+      The figure below shows a curriculum induced by the Optimized curriculum policy with two simple interventions, either resetting the agent to the start or moving them one step back.
+      Note that interaction units and curriculum steps mean the same and can be used interchangeably.
     </p>
 
     <d-figure>
@@ -169,7 +179,7 @@
           <%= require("../static/images/optimized_switch.svg") %>
         </div>
         <figcaption>
-          The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start).
+          The Optimized curriculum policy switching interventions from Soft Reset 1 (SR1 moves the agent one step back) to Hard Reset (HR resets the agent back to the start) after three interaction units.
         </figcaption>
       </figure> 
     </d-figure>
@@ -177,7 +187,7 @@
     <h4>Training</h4>
 
     <p>
-      Teacher learns online in $N_t$ rounds and plays a decision rule $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
+      Teacher learns online in $N_t$ rounds and plays a <i>decision rule</i> $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
       Each student $j$ learns via $N_s$ interaction units, updating its policy by transferring between units.
       Then, the teacher computes features $\phi$ by evaluating the student's policies, based on which it proposes the next CMDP.
       At the end of each round, the teacher adjusts its decision rule.
@@ -193,6 +203,15 @@
         </figcaption>
       </figure>
     </d-figure>
+
+    <div class="l-gutter figcaption">
+      $N_t$: Number of rounds and students<br/>
+      $\pi_{n,j}$: Policy of the $j$th student in the $n$th interaction unit<br/>
+      $\mathcal{M}_{i_n}$: CMDP induced by an intervention $i_n$<br/>
+      $\pi^T_j$: Decision rule of the teacher for the $j$th student<br/>
+      $o_n^T$: Teacher observations<br/>
+      $\phi(\pi_{n,j})$: Features computed from the $j$th student's policy in the $n$th interaction unit
+    </div>
 
     <h2 id="experiments">Experiments</h2>
 
@@ -498,7 +517,7 @@
       The predominant problem we faced during our experiments is the difficulty of defining suitable trigger states for the teacher, which can be a complex task in environments with continuous state spaces and observations.
       While the Frozen Lake environment allows to simply define which states trigger the teacher's interventions by using a distance measure from danger zones, this is less trivial for other environments.
       For example, the observation space of the car racing environment <d-cite key="gym-car-racing"></d-cite> has an observation space which consists of 96x96 pixel images.
-      In this case, defining the trigger states is not as trivial as in the Frozen Lake environment as it would require to keep track of the car's position and to work with thresholds.
+      In this case, defining the trigger states would require to keep track of the car's position and to work with thresholds.
       In addition, the set of possible reset transitions has to be hand-crafted and the teacher needs to be trained, requiring additional computational resources.
     </p>
 
