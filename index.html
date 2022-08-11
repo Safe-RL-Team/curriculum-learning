@@ -89,7 +89,7 @@ d-abstract {
 
 /* make tables/figures horizontally scrollable */
 
-d-figure, d-figure div, figure, figure div {
+figure, figure div {
   overflow-x: auto;
 }
 
@@ -210,9 +210,7 @@ d-figure, d-figure div, figure, figure div {
   <d-article id="main-article">
 
     <d-figure id="grid-visualization" class="l-page-outset">
-      <figure>
-        <div id="grid-visualization-target"></div>
-      </figure>
+      <div id="grid-visualization-target"></div>
     </d-figure>
     
     <d-abstract class="l-page-outset">
@@ -635,13 +633,15 @@ d-figure, d-figure div, figure, figure div {
     </p>
 
     <d-figure id="trajectories-visualization">
-      <div id="trajectories-visualization-target"></div>
-      <figcaption>
-        Exemplary trajectories for the Frozen Smiley environment with the Optimized policy. 
-        The lines represent the steps taken, while the background shows a heatmap of the student's positions.
-        The trajectories show a progression from the first curriculum step to a later step.
-        <!--TODO: maybe use different trajectories and optimize images-->
-      </figcaption>
+      <figure>
+        <div id="trajectories-visualization-target"></div>
+        <figcaption>
+          Exemplary trajectories for the Frozen Smiley environment with the Optimized policy. 
+          The lines represent the steps taken, while the background shows a heatmap of the student's positions.
+          The trajectories show a progression from the first curriculum step to a later step.
+          <!--TODO: maybe use different trajectories and optimize images-->
+        </figcaption>
+      </figure>
     </d-figure>
 
 
