@@ -80,7 +80,7 @@ d-abstract {
 
 /* make tables/figures horizontally scrollable */
 
-figure, figure div {
+d-figure, d-figure div, figure, figure div {
   overflow-x: auto;
 }
 
