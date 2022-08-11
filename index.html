@@ -326,8 +326,8 @@ figure {
 
     <p>
       The teacher gets a set $\mathcal{I}$ of interventions $\{ \langle \mathcal{D}_i, \mathcal{T}_i \rangle \}_{i=1}^K$ as input, which consist of trigger states $\mathcal{D}_i \subset \mathcal{S}$ and reset distributions $\mathcal{T}_i: \mathcal{S} \rightarrow \Delta_{\mathcal{S} \backslash \mathcal{D}_i}$.
-      If the student enters a trigger state $s\in \mathcal{D}_i$, the transition is modified such that $\mathcal{P}_i(s'|s,a) = \mathcal{T}_i(s'|s)$, where $s' \not\in \mathcal{D}_i$ is a safe state.
-      An intervention by the teacher does not reduce the student's reward, i.e. $r_i(s,a,s')=0$
+      If the student enters a trigger state $s\in \mathcal{D}_i$, the transition is modified such that $\mathcal{P}_i(s'|s,a) = \mathcal{T}_i(s'|s)$, leading the student to a safe state $s'\not\in \mathcal{D_i}$.
+      An intervention by the teacher does not reduce the student's reward, i.e. $r_i(s,a,s')=0$ for $s\in \mathcal{D_i}$ and $s' \not\in \mathcal{D_i}$
       <d-footnote>
         To prevent the student from relying on interventions, a constraint on the number of times the teachers can help the student is set.
         It is enforced by the CMDP solver, which penalizes the student for excessive use of the teachers help.
@@ -346,7 +346,7 @@ figure {
     </p>
     <p>
       A sequence of CMDPs $\mathcal{M}_{i_1},...,\mathcal{M}_{i_{N_s}}$, induced from a curriculum policy, is called <i>curriculum</i>.
-      The figure below shows a curriculum induced by the Optimized curriculum policy with two simple interventions, either resetting the agent to the start or moving them one step back.
+      The figure below shows a curriculum induced by the Optimized curriculum policy with two simple interventions, either resetting the agent to the start (Hard Reset) or moving them one step back (Soft Reset).
       Note that interaction units and curriculum steps mean the same and can be used interchangeably.
     </p>
 
@@ -382,12 +382,14 @@ figure {
     </d-figure>
 
     <div class="l-gutter figcaption">
-      $N_t$: Number of rounds and students<br/>
-      $\pi_{n,j}$: Policy of the $j$th student in the $n$th interaction unit<br/>
-      $\mathcal{M}_{i_n}$: CMDP induced by an intervention $i_n$<br/>
-      $\pi^T_j$: Decision rule of the teacher for the $j$th student<br/>
-      $o_n^T$: Teacher observations<br/>
-      $\phi(\pi_{n,j})$: Features computed from the $j$th student's policy in the $n$th interaction unit
+      <ul style="list-style: none; padding: 0; margin:0;">
+        <li>$N_t$: Number of rounds and students</li>
+        <li>$\pi_{n,j}$: Policy of the $j$th student in the $n$th interaction unit</li>
+        <li>$\mathcal{M}_{i_n}$: CMDP induced by an intervention $i_n$</li>
+        <li>$\pi^T_j$: Decision rule of the teacher for the $j$th student</li>
+        <li>$o_n^T$: Teacher observations</li>
+        <li>$\phi(\pi_{n,j})$: Features of the $j$th student's policy in the $n$th interaction unit</li>
+      </ul>
     </div>
 
     <h2 id="experiments">Experiments</h2>
