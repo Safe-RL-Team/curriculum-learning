@@ -225,14 +225,14 @@
       <div>
         <d-code block="" language="python">
           class Back:
-          """
-          Teacher that goes back a constant number of steps
-          """
-          def __init__(self, action_sequence, x=None):
+            """
+            Teacher that goes back a constant number of steps
+            """
+            def __init__(self, action_sequence, x=None):
               self.actions = action_sequence
               self.x = x
-    
-          def predict(self, obs):
+      
+            def predict(self, obs):
               return self.actions[self.x - 1], None
         </d-code>
       </div>
@@ -264,16 +264,16 @@
       <div>
         <d-code block="" language="python">
           class IncrementalTeacher:
-          """
-          Incremental heuristic teacher that increases the buffer
-          size on each curriculum step
-          """
-          def __init__(self, action_sequence, x=None):
+            """
+            Incremental heuristic teacher that increases the buffer
+            size on each curriculum step
+            """
+            def __init__(self, action_sequence, x=None):
               self.actions = action_sequence
               self.step = 0
               self.x = x
-    
-          def predict(self, obs):
+      
+            def predict(self, obs):
               action = int(np.ceil((1/(2 ** self.x)) * self.step))
               self.step += 1
               return self.actions[action], None
