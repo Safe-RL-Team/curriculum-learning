@@ -80,16 +80,18 @@ d-abstract {
 
 /* make tables/figures horizontally scrollable */
 
-figure, figure div {
+figure > div {
+  overflow-x: auto;
+}
+
+figure {
   overflow-x: auto;
 }
 
 /* TOC */
 
 @media (min-width: 1000px) {
-  /* TODO: maybe change min-width (general style switches at 768px, footer titles at about 1000px) */
   #main-article {
-    /* TODO: check that this doesn't break anything */
     overflow-x: initial;
   }
   .toc-wrapper {
