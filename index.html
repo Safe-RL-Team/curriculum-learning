@@ -211,8 +211,8 @@ figure {
 
   <d-article id="main-article">
 
-    <d-figure id="grid-visualization" class="l-page-outset">
-      <div id="grid-visualization-target"></div>
+    <d-figure id="minigame" class="l-page-outset">
+      <div id="minigame-target"></div>
     </d-figure>
     
     <d-abstract class="l-page-outset">
@@ -355,7 +355,8 @@ figure {
 
     <p>
       Teacher learns online in $N_t$ rounds and plays a decision rule $\pi^T_j$ that makes a new student $j$ learn under an adaptively constructed sequence of CMDPs $\mathcal{M}_{i_n}$.
-      Each student $j$ learns via $N_s$ interaction units, updating its policy by transferring between units. Then, the teacher computes features $\phi$ by evaluating the student's policies, based on which it proposes the next CMDP.
+      Each student $j$ learns via $N_s$ interaction units, updating its policy by transferring between units.
+      Then, the teacher computes features $\phi$ by evaluating the student's policies, based on which it proposes the next CMDP.
       At the end of each round, the teacher adjusts its decision rule.
     </p>
 
@@ -376,11 +377,15 @@ figure {
     <h4>Environments</h4>
 
     <p>
-      We used the two environments which are shown below. Both are based on the Frozen Lake environment from the gym-library <d-cite key="gym-flake"></d-cite>.
-      The idea of the environments is, that the agent should find its way over a frozen lake, from start to goal, while avoiding holes in the ice.
-      Because ice is slippery, there is a 20% chance that the agent moves to the side, instead of forward. This also causes the game to be non-deterministic.
-      The trigger states, which the teacher uses to detect when interventions should be done, are positioned around the dangerous holes.
-      The environments are implemented as two-dimensional square grid-worlds, where the agent can move up/down/left/right.
+      We used the two environments which are shown below. 
+      Both are based on the Frozen Lake environment from the gym-library <d-cite key="gym-flake"></d-cite>.
+      The idea of the environments is that the agent has to find its way over a frozen lake, from start to goal, while avoiding holes in the ice.
+      They are implemented as two-dimensional square grid-worlds, where the agent can move in four directions.
+      Moving to a safe state gives the agent a negative reward of -0.01, while reaching the goal rewards the agent with 6 points.
+      Interventions by the teacher do not impose costs on the agent, however failing resets the score for the round to 0.
+      Because ice is slippery, there is a 20% chance that the agent moves to the side instead of forward, causing the game to be non-deterministic.
+      The trigger states, which the teacher uses to detect when it has to intervene, are positioned around the dangerous holes within a pre-defined reachability distance.
+      To get a better idea of how the environments behave, we recommend to try out the <a href="./#minigame">minigame</a> on top of this article.
     </p>
 
     <d-figure>
