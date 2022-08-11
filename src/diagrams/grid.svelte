@@ -331,17 +331,23 @@
 
 <div class="game">
 
-  <div class="map">
-
-    <p>Score: {score == 0 ? lastScore.toFixed(2) : score.toFixed(2) }</p>
-
-    <canvas
-      bind:this={canvas}
-      width={500 * pixelRatio}
-      height={500 * pixelRatio}
-      style="max-width: 300px; width: 100%; height: 100%;"
-      on:click={() => showMessage('Press the arrow keys to move...')}
-    ></canvas>
+  <div class="view">
+    <div class="map">
+      
+      <p>Score: {score == 0 ? lastScore.toFixed(2) : score.toFixed(2) }</p>
+  
+      <canvas
+        bind:this={canvas}
+        width={500 * pixelRatio}
+        height={500 * pixelRatio}
+        style="max-width: 300px; width: 100%; height: 100%;"
+        on:click={() => showMessage('Press the arrow keys to move...')}
+      ></canvas>
+  
+      {#if confetti}
+        <Confetti cone delay={[0, 200]} amount=50 x={[-0.7, 0.7]} y={[0.5, 1.5]} />
+      {/if}
+    </div>
 
     <div class="legend">
       <div class="color" style="background-color: {colors['F']}"></div>
@@ -355,10 +361,6 @@
       <div class="color" style="background-color: {colors['T']}"></div>
       <div>Trigger</div>
     </div>
-
-    {#if confetti}
-      <Confetti cone delay={[0, 200]} amount=50 x={[-0.7, 0.7]} y={[0.5, 1.5]} />
-    {/if}
   </div>
 
   <div class="controls">
@@ -430,7 +432,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 350px;
+    max-width: 300px;
   }
 
   .status {
@@ -443,6 +445,12 @@
   }
 
   .map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .view {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -482,6 +490,30 @@
     cursor: pointer;
 	}
 
+  .legend {
+    display: grid;
+    grid-template-columns: 1.5em 1fr 1.5em 1fr 1.5em 1fr;
+    width: 100%;
+    max-width: 300px;
+    gap: 0.5em;
+  }
+
+  .legend div {
+    display: flex;
+    justify-content: center left;
+  }
+
+  @media (min-width: 1000px) {
+    .view {
+      flex-direction: row;
+    }
+    .legend {
+      grid-template-columns: 1.5em 1fr;
+      max-width: 100px;
+      padding-left: 1em;
+    }
+  }
+
   @media (min-width: 768px) {
     .game {
       flex-direction: row;
@@ -512,19 +544,6 @@
 
   .key:active {
     background-color: #ddd;
-  }
-
-  .legend {
-    display: grid;
-    grid-template-columns: 1.5em 1fr 1.5em 1fr 1.5em 1fr;
-    width: 100%;
-    max-width: 300px;
-    gap: 0.5em;
-  }
-
-  .legend div {
-    display: flex;
-    justify-content: center left;
   }
    
   .color {
