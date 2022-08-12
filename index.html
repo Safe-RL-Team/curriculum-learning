@@ -775,15 +775,15 @@ figure {
 
     <p>
       Some tasks might also be simply so risky, that the teacher prevents the student from solving them at all, because it prevents the student from taking necessary risks.
-      An example for this can be the game at the beginning, if the Frozen Smiley environment and the teacher with trigger states within two tiles around danger zones are selected.
+      An example for this can be the <a href="./#minigame">minigame</a> at the beginning, when selecting the Frozen Smiley environment and the teacher with trigger states within two tiles around danger zones.
       In these cases, less restrictive trigger states are needed, which might have to allow failures during training.
     </p>
 
     <h2 id="conclusion">Conclusion</h2>
     
     <p>
-      When comparing the different curriculum policies, we see that the Optimized one can outperform the Bandit and No Intervention policies and also the policies it is based on, i.e. Soft and Hard Reset.
-      However, with little effort, it is possible to define simple curriculum policies, which perform even better on the tested environments.
+      When comparing the different curriculum policies, we see that the Optimized one can outperform the Bandit and No Intervention policies, including the Soft and Hard Reset policies it is based on.
+      However, it is possible to define simple curriculum policies like Back or Incremental, which can perform even better than the Optimized policy on the tested environments.
       We also observed that larger environments require a longer exploration phase and that the original HR, SR and Bandit policies do not generalize well to larger environments.
       Fundamentally, we found that defining reset transitions which keep the student safe is easier than defining suitable trigger states in the first place.
       When state spaces become more complex, dynamic or just partly observable, this could become a problem.
