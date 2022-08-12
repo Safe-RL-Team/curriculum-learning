@@ -120,7 +120,7 @@
       In contrast to learning from demonstration <d-cite key="Argall2009ASO"></d-cite>, curriculum learning does not expect the teacher to know how to solve the task,
       but rather relies on the teacher to supervise and structure the learning process.
       A partly similar approach to CISR was introduced by Graves et al. <d-cite key="Graves2017AutomatedCL"></d-cite>, using a nonstationary multi-armed bandit algorithm to determine an optimized curriculum.
-      Matiisen et al.<d-cite key="Matiisen2017TSCL"></d-cite> formalized the concept of learning a curriculum with an additional RL agent as <i>Teacher-Student Curriculum Learning</i> (TSCL) and applied the method to solve mazes in Minecraft.
+      Matiisen et al. <d-cite key="Matiisen2017TSCL"></d-cite> formalized the concept of learning a curriculum with an additional RL agent as <i>Teacher-Student Curriculum Learning</i> (TSCL) and applied the method to solve mazes in Minecraft.
     </p>
 
     <p>
@@ -217,8 +217,14 @@
       </ul>
     </div>
 
+
     <h2 id="experiments">Experiments</h2>
 
+    <p>
+      Our experiments concentrated on comparing the Optimized policy to other student-independent curriculum policies and evaluating how well they generalize to an environment of different size.
+      To accomplish this, we created our own Frozen Smiley environment, which is based on the Frozen Lake environment used by Turchetta et al. <d-cite key="Turchetta2020SafeRL"></d-cite>.
+      In addition, we propose two new curriculum policies, which will be explained in detail in this section.
+    </p>
 
     <h4>Environments</h4>
 
@@ -227,9 +233,9 @@
       Both are based on the Frozen Lake environment from the gym-library <d-cite key="gym-flake"></d-cite>.
       The idea of the environments is that the agent has to find its way over a frozen lake, from start to goal, while avoiding holes in the ice.
       They are implemented as two-dimensional square grid-worlds, where the agent can move in four directions.
-      Moving to a safe state gives the agent a negative reward of -0.01, while reaching the goal rewards the agent with 6 points.
-      Interventions by the teacher do not impose costs on the agent, however failing resets the score for the round to 0.
-      Because ice is slippery, there is a 20% chance that the agent moves to the side instead of forward, causing the game to be non-deterministic.
+      Moving to a safe state gives the agent a negative reward of $-0.01$, while reaching the goal rewards the agent with $6$ points.
+      Interventions by the teacher do not impose costs on the agent, however failing resets the score for the round to $0$.
+      Because ice is slippery, there is a $20\%$ chance that the agent moves to the side instead of forward, causing the game to be non-deterministic.
       The trigger states, which the teacher uses to detect when it has to intervene, are positioned around the dangerous holes within a pre-defined reachability distance.
       To get a better idea of how the environments behave, we recommend to try out the <a href="./#minigame">minigame</a> on top of this article.
     </p>
@@ -248,11 +254,17 @@
 
     <h4>Curriculum Policies</h4>
 
+    <p>
+      While a learned curriculum policy is presumably more generally applicable and does not require manual optimization, it also comes with the disadvantage of a training process and the need for a performance measure of the student.
+      With this in mind, we came up with two simple curriculum policies of the form $\pi^T : [N_s] \rightarrow \mathcal{I}$, which will be described in the following.
+    </p>
+
     <h5>The Back Policy</h5>
     <p>
       One of the simplest curriculum policy one could think of involves always going back $x$ steps when a trigger state is visited.
       For our experiments, we tested values for $x$ in the interval $[1,9]$.
-      When playing the minigame on top of this article, you can try out the Back$_4$ policy by yourself and see how it influences training.
+      When playing the <a href="./#minigame">minigame</a> on top of this article, you can try out the Back$_4$ policy by yourself and see how it influences training.
+      Below is our implementation in Python, which simply involves a class taking $x$ as an input and always taking the action at index $x-1$, which corresponds to going back $x$ steps.
     </p>
 
     <figure>
@@ -271,15 +283,21 @@
         </d-code>
       </div>
       <figcaption>
-        Our implementation of the Back$_x$ curriculum policy. The $n^\textrm{th}$ element of the $\texttt{action\_sequence}$ list corresponds to the action which resets the agent by $n$ steps.
+        Our implementation of the Back$_x$ curriculum policy. The $n$th element of the $\texttt{action\_sequence}$ list corresponds to the action which resets the agent by $n$ steps.
       </figcaption>
     </figure>
+
+    <p>
+      To compare the Back curriculum policy with the Optimized one, we plotted them for different values of $x$ below.
+      Move the slider and see how they measure up in the Frozen Smiley environment for yourself.
+    </p>
 
     <d-figure id="back-visualization">
       <figure>
         <div id="back-visualization-target"></div>
         <figcaption>
-          Successes for the Optimized curriculum policy and the Back policy for different values of $x$.
+          Successes for the Optimized curriculum policy and the Back policy for different values of $x$ in the Frozen Smiley environment. 
+          The transparent areas show the standard deviation for $N_t = 10$ students.
         </figcaption>
       </figure> 
     </d-figure>
@@ -290,8 +308,10 @@
       The idea behind the Incremental curriculum policy is the tradeoff between exploration and exploitation.
       While the agent should be free to explore the map in the beginning, it should be punished harder for failures as the learning process progresses.
       This is realized by incrementally increasing the amount of steps the agent is reset linearly.
-      Formally, Incremental$_x$ resets the agent by $\lceil \frac{1}{2^x} \cdot n \rceil$ steps in the $n^{\textrm{th}}$ curriculum step.
+      Formally, Incremental$_x$ resets the agent by $\lceil \frac{1}{2^x} \cdot n \rceil$ steps in the $n$th curriculum step.
       During our experiments, we tried out values for $x$ in the range $[0,4]$.
+      Our implementation below simply increases a counter after each intervention unit and scales it linearly with the parameter $x$.
+      The rounded result is then used as the index for the action, corresponding to the number of steps the agent is reset by.
     </p>
 
     <figure>
@@ -314,15 +334,21 @@
         </d-code>
       </div>
       <figcaption>
-        Our implementation of the Incremental$_x$ curriculum policy. The $n^\textrm{th}$ element of the $\texttt{action\_sequence}$ list corresponds to the action which resets the agent by $n$ steps.
+        Our implementation of the Incremental$_x$ curriculum policy. The $n$th element of the $\texttt{action\_sequence}$ list corresponds to the action which resets the agent by $n$ steps.
       </figcaption>
     </figure>
+
+    <p>
+      Below we plotted the Incremental and the Optimized curriculum policy for different values of $x$.
+      Again, use the slider to try out which value of $x$ works best in the Frozen Smiley environment.
+    </p>
 
     <d-figure id="incremental-visualization">
       <figure>
         <div id="incremental-visualization-target"></div>
         <figcaption>
-          Successes for the Optimized curriculum policy and the Incremental policy for different values of $x$.
+          Successes for the Optimized curriculum policy and the Incremental policy for different values of $x$ in the Frozen Smiley environment.
+          The transparent areas show the standard deviation for $N_t = 10$ students.
         </figcaption>
       </figure>
     </d-figure>
@@ -330,16 +356,23 @@
 
     <h2 id="results">Results</h2>
 
+    <p>
+      In this section, we take a look at how our curriculum policies compare to the others and see how the larger Frozen Smiley environment influences their performance.
+    </p>
+
     <h4>Student Performance</h4>
 
     <p>
-      Adding the teacher with its trigger states and intervention transitions to the maps kept the students safe during training.
-      When choosing the best parameters out of those we tested, the Back and Incremental policy were able to outperform the Optimized one.
-      As the Frozen Smiley environment is slightly larger than the original one, the increasing path lengths made an increase in reset steps for the Back policy necessary.
-      Similarly, the Incremental curriculum policy took advantage of a longer exploration phase in the larger environment, by slowing down the increase of reset steps.
+      For our comparisons, we measure the successes, training failures and average rewards both for the Frozen Lake and the Frozen Smiley environment.
+      Each curriculum policy was applied to $10$ students to account for errors and the randomness of the environment.
     </p>
 
     <h5>Frozen Lake</h5>
+
+    <p>
+      From experimentation with the values of $x$ like described in the previous section, we found that in the Frozen Lake environment $x=6$ and $x=2$ worked best for the Back and Incremental curriculum policies respectively.
+      In this configuration, both the Back and the Incremental policy surpass the others within the first curriculum steps and quickly reach a success rate around $90\%$.
+    </p>
 
     <d-figure>
       <figure>
@@ -347,10 +380,17 @@
           <%= require("../static/images/small_successes.svg") %>
         </div>
         <figcaption>
-          Success rates of different curriculum policies on the Frozen Lake environment. For our policies, the best found parameters $x$ are used.
+          Success rates of different curriculum policies on the Frozen Lake environment.
+          For our policies, the best found parameters $x$ are used.
+          The transparent areas show the standard deviation for $N_t = 10$ students.
         </figcaption>
       </figure>
     </d-figure>
+
+    <p>
+      This is also reflected in the table below, which shows that all teachers keep the student safe while training the student in the original environment leads to failures during training.
+      On average, the Back and Incremental policy outperform the others with the Back policy performing slightly better than the Incremental policy.
+    </p>
 
     <figure>
       <div>
@@ -411,12 +451,17 @@
       </div>
       <figcaption>
         Success rates, training failures and average returns of different curriculum policies on the Frozen Lake environment.
-        All teachers keep the student safe while training the student in the original environment leads to failures during training.
-        On average, the Back and Incremental policy outperform the others. 
+        The highest values in each column are highlighted.
       </figcaption>
     </figure>
 
     <h5>Frozen Smiley</h5>
+
+    <p>
+      For the Frozen Smiley environment, we found that $x=8$ works best for the Back curriculum policy, while Incremental performs best for $x=4$.
+      Noticeably, the increase within the first curriculum steps is not as steep in this environment, only reaching a stable success rate around $90\%$ after $6$ intervention units.
+      Even more apparent is the lower performance of the SR1 (Soft Reset 1) and the Bandit policy.
+    </p>
 
     <d-figure>
       <figure>
@@ -424,10 +469,18 @@
           <%= require("../static/images/16x16_successes.svg") %>
         </div>
         <figcaption>
-          Success rates of different curriculum policies on the Frozen Smiley environment. For our policies, the best found parameters $x$ are used.
+          Success rates of different curriculum policies on the Frozen Smiley environment.
+          For our policies, the best found parameters $x$ are used.
+          The transparent areas show the standard deviation for $N_t = 10$ students.
         </figcaption>
       </figure>
     </d-figure>
+
+    <p>
+      Like previously, all teachers keep the students safe during training as seen below.
+      The Optimized curriculum policy manages to keep up with the Incremental policy in terms of successes after $10$ interaction units.
+      Still, the Back policy performs best at a final success rate of over $90\%$ and the largest average returns.
+    </p>
 
     <figure>
       <div>
@@ -488,11 +541,9 @@
       </div>
       <figcaption>
         Success rates, training failures and average returns of different curriculum policies on the Frozen Smiley environment.
-        All teachers keep the student safe while training the student in the original environment leads to failures during training.
-        On average, the Back and Incremental policy outperform the others. 
+        The highest values in each column are highlighted.
       </figcaption>
     </figure>
-
 
     <h4>Trajectories</h4>
 
@@ -508,10 +559,19 @@
           Exemplary trajectories for the Frozen Smiley environment with the Optimized policy. 
           The lines represent the steps taken, while the background shows a heatmap of the student's positions.
           The trajectories show a progression from the first curriculum step to a later step.
-          <!--TODO: maybe use different trajectories and optimize images-->
         </figcaption>
       </figure>
     </d-figure>
+
+    <h4>Evaluation</h4>
+
+    <p>
+      Adding the teacher with its trigger states and intervention transitions to the maps kept the students safe during training.
+      When choosing the best parameters out of those we tested, the Back and Incremental policy were able to outperform the Optimized one.
+      Both the higher values for $x$ and slower increase in success rates could be explained by the increased size of the environment.
+      As the Frozen Smiley environment is slightly larger than the original one, the increasing path lengths made an increase in reset steps for the Back policy necessary.
+      Similarly, the Incremental curriculum policy took advantage of a longer exploration phase in the larger environment, by slowing down the increase of reset steps.
+    </p>
 
 
     <h2 id="limitations">Limitations</h2>
@@ -537,14 +597,14 @@
       During our experiments, we found that it is possible to define simple curriculum policies, which outperform a learned policy with little effort.
       We also observed that larger environments require a longer exploration phase and that the original HR, SR and Bandit policies do not generalize well to larger environments.
       Fundamentally, we found that defining reset transitions which keep the student safe is easier than defining suitable trigger states in the first place.
-      When state spaces become more complex, dynamic or just partly observable, this can become a problem.
+      When state spaces become more complex, dynamic or just partly observable, this could become a problem.
     </p>
 
 
     <h2 id="outlook">Outlook</h2>
 
     <p>
-      Going forward, the method could be applied to OpenAI's Safety Gym environments to test the robustness of different strategies.
+      Going forward, the method could be applied to other environments in OpenAI's Safety Gym <d-cite key="Ray2016SafetyGym"></d-cite> to test the robustness of different strategies.
       Additionally, the amount of available interventions for the Optimized curriculum policy could be increased to account for this complexity.
       Finally, it has to be evaluated how well our curriculum policies generalize to dynamic or random environments.
     </p>
