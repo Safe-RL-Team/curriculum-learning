@@ -12,12 +12,10 @@
 </script>
 
 <div style="display: flex; flex-direction: column; align-items: center; padding-top: 1em">
-  <div style="max-width:300px; width:100%;">
-    <img
-      src="images/trajectories{count}.svg"
-      alt="Interactive plot displaying the trajectories of the RL agent on the map"
-    />
-  </div>
+  <img
+    src="images/trajectories{count}.svg"
+    alt="Interactive plot displaying the trajectories of the RL agent on the map"
+  />
   <div style="text-align:center;">
     <p>Trajectory after curriculum step {count + 1}</p>
     <input type="range" min="0" max="{len}" value="0" on:input={input}>

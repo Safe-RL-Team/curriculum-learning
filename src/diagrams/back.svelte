@@ -15,8 +15,6 @@
   <img 
     src="images/16x16_back{count}_successes.svg"
     alt="Interactive plot displaying the success rate of the back curriculum policy over the number of curriculum steps"
-    height="300px"
-    width="300px"
   /> 
   <div style="text-align:center;">
     <p>x = {count}</p>
