@@ -3,6 +3,7 @@
   let count = 1;
   let hasInteracted = false;
 
+  // function for updating count on input
   function input(x) {
     if (!hasInteracted) {
       hasInteracted = true;

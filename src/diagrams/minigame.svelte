@@ -30,15 +30,14 @@
 
   var pixelRatio; // adjust game resolution to higher resolution displays
 
+  // load robot images for the RL agent
   const robot = new Image();
   robot.src = './images/robot.png';
-
   const robotFlipped = new Image();
   robotFlipped.src = './images/robot-flipped.png'
-
   var flipped = false;
-  var image = robot;
 
+  // initialize score
   var score = 0;
   var lastScore = 0;
 
@@ -140,8 +139,8 @@
             start = [j, i];
           }
 
-          let x = j * tileSize;
-          let y = i * tileSize;
+          const x = j * tileSize;
+          const y = i * tileSize;
 
           ctx.beginPath();
           ctx.rect(x, y, tileSize + 1, tileSize + 1);
@@ -153,12 +152,7 @@
     }
 
     async function drawAgent() {
-      if (flipped) {
-        image = robotFlipped;
-      } else {
-        image = robot;
-      }
-
+      const image = flipped ? robotFlipped : robot;
       ctx.drawImage(image, $pos[0] * tileSize, $pos[1] * tileSize, tileSize, tileSize);
     }
 
@@ -298,7 +292,8 @@
   function mapChangedHandler() {
     mapChanged = true;
   }
-  
+
+  // handle key presses (up/left/down/right or w/a/s/d)
   function keyDownHandler(e) {
 		if(e.keyCode == 39 || e.key == 'd') {
 			rightPressed = true;
