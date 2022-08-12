@@ -89,6 +89,11 @@ figure {
   overflow-y: hidden;
 }
 
+.image {
+  margin: 0 auto;
+  max-width: 25em;
+}
+
 /* TOC */
 
 @media (min-width: 1000px) {
