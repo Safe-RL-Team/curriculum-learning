@@ -53,33 +53,35 @@ d-abstract {
   left: -48px;
 }
 
-#table {
+/* table styling */
+
+.table {
   overflow-x: scroll;
 }
 
-#table th {
+.table th {
   white-space: nowrap;
 }
 
-#table tbody th {
+.table tbody th {
   font-weight: initial;
   border-bottom: 1px solid rgb(242, 242, 242);
 }
 
-#table tbody tr:last-of-type th {
+.table tbody tr:last-of-type th {
   border-bottom: inherit;
 }
 
-#table td,
-#table thead th {
+.table td,
+.table thead th {
   text-align: center;
 }
 
-#table td {
+.table td {
   border-color: rgb(242, 242, 242);
 }
 
-#table td.no {
+.table td.no {
   background-color: #f6f6f6;
 }
 
@@ -97,6 +99,8 @@ figure {
   overflow-x: auto;
   overflow-y: hidden;
 }
+
+/* image size and centering */
 
 .image {
   margin: 0 auto;
@@ -578,7 +582,7 @@ figure {
 
     <figure>
       <div>
-        <table style="width: 100%" id="table">
+        <table style="width: 100%" class="table">
           <thead>
             <tr>
               <th></th>
@@ -668,7 +672,7 @@ figure {
 
     <figure>
       <div>
-        <table style="width: 100%" id="table">
+        <table style="width: 100%" class="table">
           <thead>
             <tr>
               <th></th>
