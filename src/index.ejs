@@ -580,7 +580,7 @@
       While the described method has several clear advantages, there are also disadvantages and limitations coming along with it.
       The predominant problem we faced during our experiments is the difficulty of defining suitable trigger states for the teacher, which can be a complex task in environments with continuous state spaces and observations.
       While the Frozen Lake environment allows to simply define which states trigger the teacher's interventions by using a distance measure from danger zones, this is less trivial for other environments.
-      For example, the observation space of the car racing environment <d-cite key="gym-car-racing"></d-cite> consists of 96x96 pixel images.
+      For example, the observation space of the car racing environment <d-cite key="gym-car-racing"></d-cite> consists of $96 \times 96$ pixel images.
       In this case, defining the trigger states would require to keep track of the car's position and to work with thresholds.
       In addition, the set of possible reset transitions has to be hand-crafted and the teacher needs to be trained, requiring additional computational resources.
     </p>
