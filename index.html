@@ -299,7 +299,7 @@ figure {
       To be able to help the student, the teacher is given a set of interventions and has to decide on when to apply which.
       For example, when teaching a child how to ride a bike, possible interventions may be adding training wheels, catching them when they fall or giving them knee and elbow guards.
       The order in which the interventions are applied has to be optimized as it can significantly impact the student's performance.
-      In our analogy, it may be detrimental to skip the training wheels or to never remove them, since this would either give them no chance at getting started to learn the task or improving themselves.
+      In our bike example, it may be detrimental to skip the training wheels or to never remove them, since this would either give the child no chance at getting started to learn the task or at improving itself.
       By training multiple students, the teacher is able to learn an optimal curriculum policy.
       <d-cite key="Turchetta2020SafeRL"></d-cite>
     </p>
@@ -452,7 +452,7 @@ figure {
       One of the simplest curriculum policy one could think of involves always going back $x$ steps when a trigger state is visited.
       For our experiments, we tested values for $x$ in the interval $[1,9]$.
       When playing the <a href="./#minigame">minigame</a> on top of this article, you can try out the Back$_4$ policy by yourself and see how it influences training.
-      Below is our implementation in Python, which simply involves a class taking $x$ as an input and always taking the action at index $x-1$, which corresponds to going back $x$ steps.
+      Below is our implementation in Python, which simply involves a class taking $x$ as an input and always taking the resulting state of the action at index $x-1$, which corresponds to going back $x$ steps.
     </p>
 
     <figure>
